@@ -20,8 +20,8 @@
 
       <!-- translation pages  -->
       <el-container>
-        <el-main>The Translating Table
-          <el-scrollbar height="350px">
+        <el-main style="height: 20rem;">The Translating Table
+          <el-scrollbar height="90%">
             <!-- chooseOperation let you display choosed row info in the footer table -->
             <el-table :key="keyNum" ref="MainTableRef" :data="tableData" highlight-current-row style="width: 100%"
               @selection-change="handleSelectionChange" @row-click="chooseOperation" >
@@ -45,14 +45,14 @@
 
           <hr>
           <!-- edit the translation -->
-          <el-input v-model="edit_translation" placeholder="Please input" @change="handleChange" clearable/>
+          <el-input type="textarea" v-model="edit_translation" :autosize="{minRows:4,maxRows:6}" placeholder="Please input" @change="handleChange" clearable/>
           <hr>
 
           <div class="item5">
             <el-button type="primary" @click="mySave">SAVE</el-button>
             <el-button type="primary" @click="myDownload">Download</el-button>
             <el-button type="primary" @click="myMark">Mark</el-button>
-            <el-button type="primary" @click="myRemove">Remove</el-button>
+            <el-button type="primary" @click="myRemove">Clear</el-button>
           </div>
         </el-footer>
       </el-container>
@@ -73,66 +73,81 @@ export default {
               translation: '',
               relation: ''},
       //my data by Yutan Wu, why you do not use list? arr is hard to read.
-      edit_translation: 'this is the first translation',
+      edit_translation: '',
       tableData: [
         {
-          origin: 'this is the first original text',
-          translation: 'this is the first translation',
-          relation: 'this is the first related information',
+          origin: 'I can eat glass, it doesn\'t hurt me.',
+          translation: '我能吃玻璃而不伤身体。',
+          relation: '[glass]->[玻璃]; Proofread',
         },
         {
-          origin: 'this is the second original text',
-          translation: 'this is the second translation',
-          relation: 'this is the second related information',
+          origin: 'Computer science is beautiful.',
+          translation: '计算机科学十分美妙。',
+          relation: '[Computer Science]->[计算机科学]',
         },
         {
-          origin: 'this is the third original text',
-          translation: 'this is the third translation',
-          relation: 'this is the third related information',
+          origin: 'Dummy',
+          translation: '占位',
+          relation: 'Proofread',
         },
         {
-          origin: 'this is the first original text',
-          translation: 'this is the first translation',
-          relation: 'this is the first related information',
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
         },
         {
-          origin: 'this is the second original text',
-          translation: 'this is the second translation',
-          relation: 'this is the second related information',
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
         },
         {
-          origin: 'this is the third original text',
-          translation: 'this is the third translation',
-          relation: 'this is the third related information',
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
         },
         {
-          origin: 'this is the first original text',
-          translation: 'this is the first translation',
-          relation: 'this is the first related information',
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
         },
         {
-          origin: 'this is the second original text',
-          translation: 'this is the second translation',
-          relation: 'this is the second related information',
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
         },
         {
-          origin: 'this is the third original text',
-          translation: 'this is the third translation',
-          relation: 'this is the third related information',
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
+        },
+        {
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
+        },
+        {
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
+        },
+        {
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
         },
       ],
       tableAimedData: [
         {
-          origin: 'this is the first original text',
-          translation: 'this is the first translation',
-          relation: 'this is the first related information',
         },
       ]
     }
   },
+  created: function() {
+    this.onload();
+  },
   methods: {
     myRemove() {
-      this.$alert("this function is not completed yet.");
+      this.edit_translation = '';
     },
     mySave() {
       this.keyNum++;
@@ -144,7 +159,9 @@ export default {
     myMark() {
       this.$alert("this function is not completed yet.");
     },
-
+    onload() {
+      this.chooseOperation(this.tableData[0]);
+    },
     chooseOperation(row) {
       this.tableAimedData = []
       this.tableAimedData.push(row)
@@ -160,14 +177,14 @@ export default {
 <style scoped>
 .el-aside,
 .el-main {
-  height: 500px;
-  margin: 5px;
+  overflow: hidden;
+  margin: .5rem;
   background: rgba(94, 173, 238, 0.3);
 }
 
 .el-footer {
-  height: 200px;
-  margin: 5px;
+  height: 20rem;
+  margin: .5rem;
   background: rgba(94, 173, 238, 0.3);
 }
 </style>
