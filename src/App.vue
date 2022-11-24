@@ -21,8 +21,9 @@
       <el-menu-item index="/about_us">About Us</el-menu-item>
       <el-menu-item index="/help">Help</el-menu-item>
     </el-menu>
-    <router-view />
   </div>
+  <div id="nav-placeholder"></div>
+  <router-view />
 </template>
 
 <script setup>//UI decoration setups
@@ -52,5 +53,9 @@ function handleSelect(key) {
 #nav {
   position: fixed;
   width: 100%;
+}
+
+#nav-placeholder {
+  height: 5em;
 }
 </style>
