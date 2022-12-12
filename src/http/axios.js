@@ -6,7 +6,7 @@ import router from '@/router'
 axios.defaults.timeout = 10000 // 请求超时时间
 
 const Service = axios.create({
-    baseURL: '/',
+    baseURL: 'http://127.0.0.1:8080/',
 })
 
 // axios 请求拦截器
@@ -48,7 +48,6 @@ Service.interceptors.response.use(
                 }
                 cont ++;
             }
-
             return res;
         }else if (res.status === 401){
             router.push('/home');

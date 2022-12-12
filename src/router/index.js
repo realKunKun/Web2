@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Login from '../views/AnotherLogIn.vue'
+import Login from '../views/LogIn.vue'
 
 const routes = [
   {
@@ -64,11 +64,11 @@ router.beforeEach((to,from,next)=>{
     if(localStorage.getItem("access_token")) {  // 从本地存储localStorage获取当前的token是否存在
       next()
     }else{
-      next('/home') //如果token不存在，就跳到首页
+      next('/login') //如果token不存在，就跳到首页
     }
   }else{
     if(localStorage.getItem("access_token") && to.path == '/login') {  //token存在时候，进去登录页面就自动跳转到首页
-      next('/home')
+      next('/manage')
     }else{
       next()
     }

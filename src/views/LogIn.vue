@@ -35,9 +35,7 @@
         </div>
       </div>
       <div class="butt">
-        <el-button type="primary" @click.native.prevent="login('form')"
-        >Login In</el-button
-        >
+        <el-button type="primary" @click.native.prevent="login('form')">Login In</el-button>
         <el-button class="shou" @click="register">Register</el-button>
       </div>
     </div>
