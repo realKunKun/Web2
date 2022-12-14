@@ -43,6 +43,7 @@
 </template>
 
 <script>
+
 import { login } from "@/http/api";
 //import { setToken } from "@/request/auth";
 
@@ -79,35 +80,20 @@ export default {
         if (valid) {
           login(this.form)
               .then((res) => {
-                if (res.code === 200) {
-                  //setToken(res.data.token);
-                  localStorage.setItem("USERNAME", res.data.username);
-                  this.$message({
-                    message: "登录成功啦",
-                    type: "success",
-                    showClose: true,
-                  });
-                  //this.$router.replace("/");
-                } else {
-                  this.$message({
-                    message: "账户名或密码错误",
-                    type: "error",
-                    showClose: true,
-                  });
-                }
+                //console.log(res);
+                //setToken(res.data.token);
+                localStorage.setItem("access_token", res.data.data);
               })
               .catch((err) => {
-                this.$message({
-                  message: "账户名或密码错误",
-                  type: "error",
-                  showClose: true,
-                });
+                //this.$message({message: "账户名或密码错误", type: "error", showClose: true,});
+                console.log(err);
               });
         } else {
           return false;
         }
       });
     },
+
     remenber(data){
       this.checked=data
       if(this.checked){
