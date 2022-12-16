@@ -45,7 +45,8 @@
 <script>
 
 import { login } from "@/http/api";
-//import { setToken } from "@/request/auth";
+import router from "@/router";
+
 
 export default {
   name: "login",
@@ -76,18 +77,15 @@ export default {
   },
   methods: {
     login(form) {
+      window.localStorage.removeItem('access_token')
       this.$refs[form].validate((valid) => {
+        console.log(form.toString())
         if (valid) {
           login(this.form)
               .then((res) => {
-                //console.log(res);
-                //setToken(res.data.token);
                 localStorage.setItem("access_token", res.data.data);
+                router.push('/test');
               })
-              .catch((err) => {
-                //this.$message({message: "账户名或密码错误", type: "error", showClose: true,});
-                console.log(err);
-              });
         } else {
           return false;
         }
