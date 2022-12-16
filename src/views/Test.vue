@@ -53,6 +53,7 @@
             <el-button type="primary" @click="myDownload">Download</el-button>
             <el-button type="primary" @click="myMark">Mark</el-button>
             <el-button type="primary" @click="myRemove">Clear</el-button>
+            <el-button type="primary" @click="fresh">Fresh</el-button>
           </div>
         </el-footer>
       </el-container>
@@ -63,6 +64,7 @@
 <script>
 
 
+import {getTranslation, updateTranslation} from "@/http/api";
 
 export default {
   data() {
@@ -146,12 +148,21 @@ export default {
     this.onload();
   },
   methods: {
+    fresh(){
+      getTranslation(1).then((res)=>{
+          console.log(res.data.desc)
+      })
+
+    },
     myRemove() {
       this.edit_translation = '';
     },
     mySave() {
       this.keyNum++;
       this.tableData[this.tableData.indexOf(this.row)].translation=this.edit_translation;
+      updateTranslation("nothing",1).then((res)=>{
+        console.log(res.data.desc)
+      })
     },
     myDownload() {
       this.$alert("this function is not completed yet.");

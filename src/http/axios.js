@@ -15,7 +15,6 @@ Service.interceptors.request.use(
         if(localStorage.getItem("access_token")){
             config.headers.Authorization = localStorage.getItem('access_token');
         }
-        console.log(config.toString())
         return config
     },error=>{
         Modal.confirm({
@@ -36,8 +35,6 @@ Service.interceptors.response.use(
                 title: 'message',
                 content: "Successful！",
             })
-            return res;
-        }else if (res.status === 401){
             return res;
         }
         return res;
