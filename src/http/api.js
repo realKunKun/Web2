@@ -234,5 +234,90 @@ import Service from './axios.js'
             })
         }
 //Project Group Operation
+        //List all group member (and their roles) of specified project.
+        export const getAllGroupMember = (num) =>{
+               return Service({
+                   url:'/proj/'+num+'/grp',
+                   method:'get'
+               })
+        }
+        //Query a relationship for it's role to specified project abd user
+        export const getGroupMember = (pro_id,usr_id) =>{
+               return Service({
+                   url:'/proj/'+pro_id+'/grp/'+usr_id,
+                   method:'get'
+               })
+        }
+        //Modify a user's role in specified group
+        export const changeGroupMemberRole = (pro_id,usr_id,data) =>{
+            return Service({
+                url:'/proj/'+pro_id+'/grp/'+usr_id,
+                method:'put',
+                data
+            })
+        }
+        //Add a user to group with specified group
+        export const createGroupMemberRole = (pro_id,usr_id,data) =>{
+            return Service({
+                url:'/proj/'+pro_id+'/grp/'+usr_id,
+                method:'post',
+                data
+            })
+        }
+        //Remove a user from specified group
+        export const deleteGroupMemberRole = (pro_id,usr_id) =>{
+            return Service({
+                url:'/proj/'+pro_id+'/grp/'+usr_id,
+                method:'delete'
+            })
+        }
 //Project Terminology Management
+        //Query all terminologies blinded to the specified project
+        export const getAllTerminologies = (pid)  =>{
+               return Service({
+                   url:'/proj/'+pid+'/term',
+                   method:'get'
+               })
+        }
+        //Update all terminologies data in the specified project
+        export const updateTerminologies = (pid,data)  =>{
+            return Service({
+                url:'/proj/'+pid+'/term',
+                method:'post',
+                data
+            })
+        }
+        //Query Terminology
+        export const queryTerminologies = (pid,data)  =>{
+            return Service({
+                url:'/proj/'+{pid}+'/term/query',
+                method:'get',
+                data
+            })
+        }
 //Terminology Manipulation
+        //Select a terminology by ID
+        export const getSpecifiedTerminologies = (id) =>{
+               return Service({
+                   url:'/term/'+id,
+                   method:'get'
+               })
+        }
+        //Update a terminology by ID
+        export const updataSpecifiedTerminologies = (id,comment,committer,oriWord,tarWord) =>{
+            return Service({
+                url:'/term/'+id,
+                method:'put',
+                comment:comment,
+                committer:committer,
+                oriWord:oriWord,
+                tarWord:tarWord
+            })
+        }
+        //Delete a terminology by ID
+        export const deleteSpecifiedTerminologies = (id) =>{
+            return Service({
+                url:'/term/'+id,
+                method:'delete'
+            })
+        }
