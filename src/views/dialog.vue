@@ -1,0 +1,119 @@
+<!--
+ * @Author: Yutan Wu
+ * @Date: 2022-12-18 14:37:25
+ * @LastEditTime: 2022-12-18 14:49
+ * @LastEditors: Yutan Wu
+ * @Description: This is the dialog that in the 'Edit' button of the Group.vue
+ * @FilePath: \vue3-element-admin\src\view\dialog.vue
+-->
+<template>
+    <el-dialog :model-value="true" :title="title" @close="handleClose">
+      <el-form
+        ref="ruleFormRef"
+        :model="formData"
+        :rules="rules"
+        label-width="25%"
+        class="demo-ruleForm"
+        :size="formSize"
+      >
+        <el-form-item label="Project Name: " prop="ProjectName">
+          <el-input v-model="formData.ProjectName"></el-input>
+        </el-form-item>
+        <el-form-item label="Project Tag: " prop="ProjectTag">
+          <el-input v-model="formData.ProjectTag"></el-input>
+        </el-form-item>
+        <el-form-item label="Project Discription: " prop="ProjectDiscription">
+          <el-input type="textarea" :autosize="{minRows:8}" v-model="formData.ProjectDiscription"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm()">Confirm</el-button>
+          <el-button @click="resetForm()">Reset</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+  </template>
+  
+  <script>
+  import {
+         reactive, toRefs, watch, ref, h, onMounted, computed } from "vue";
+  export default {
+        
+    props: {
+        
+      title: {
+        
+        type: String,
+        default: "",
+      },
+      dialogShow: {
+        
+        type: Boolean,
+        default: false,
+      },
+      rowInfo: {
+        
+        type: Object,
+        default() {
+        
+          return {
+        };
+        },
+      },
+      arrayNum: {
+        
+        type: Number,
+        default: 0,
+      },
+    },
+    setup(props, {
+          emit }) {
+        
+      const data = reactive({
+        
+        dialogFlag: false,
+        formData: {
+        },
+      });
+      const method = reactive({
+        
+        // close the dialog
+        handleClose() {
+        
+          emit("update:dialogShow", false);
+        },
+        // reset the dialog
+        resetForm() {
+        
+          data.formData = Object.assign({
+        }, props.rowInfo);
+        },
+        // submit the dialog
+        submitForm() {
+        
+          method.handleClose();
+          if (props.rowInfo.name) {
+        
+            // modify the dialog
+            emit("editRow", data.formData);
+          } else {
+        
+            // add a new dialog to the data
+            data.formData["id"] = props.arrayNum + 1;
+            emit("addRow", data.formData);
+          }
+        },
+      });
+      onMounted(() => {
+        
+        data.formData = Object.assign({
+        }, props.rowInfo);
+        data.dialogFlag = props.rowInfo;
+      });
+      return {
+         ...toRefs(data), ...method };
+    },
+  };
+  </script>
+  
+  <style>
+  </style>

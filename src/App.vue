@@ -18,6 +18,7 @@
       <el-menu-item index="/translation">Translation</el-menu-item>
       <el-menu-item index="/">Log In/Sign In</el-menu-item>
       <el-menu-item index="/manage">Group</el-menu-item>
+      <el-menu-item index="/group">Test Group</el-menu-item>
       <el-menu-item index="/about_us">About Us</el-menu-item>
       <el-menu-item index="/help">Help</el-menu-item>
     </el-menu>

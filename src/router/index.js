@@ -52,6 +52,12 @@ const routes = [
     //meta: {requireAuth: true,  },
     component: () => import('../views/Help.vue')
   },
+  {
+    path: '/group',
+    name: 'Group',
+    //meta: {requireAuth: true,  },
+    component: () => import('../views/Group.vue')
+  },
 ]
 
 const router = createRouter({
