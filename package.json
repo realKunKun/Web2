@@ -12,18 +12,22 @@
     "element-plus": "^2.2.22",
     "naive-ui": "^2.34.0",
     "vue": "^3.2.13",
+    "vue-layer": "^1.2.5",
     "vue-router": "^4.0.3",
+    "vue3-layer": "^1.0.18",
     "vue3-simple-alert": "^1.0.4",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
     "@element-plus/icons": "^0.0.11",
     "@element-plus/icons-vue": "^2.0.10",
+    "@layui/layer-vue": "^1.4.7",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "ant-design-vue": "^3.2.15",
+    "jquery": "^3.6.2",
     "resolve": "^1.22.1"
   }
 }

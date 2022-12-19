@@ -24,13 +24,13 @@ const routes = [
     path: '/translation',
     name: 'Translation',
     //meta: {requireAuth: true,  },
-    component: () => import('../views/Translation.vue')
+    component: () => import('../views/useless/TestTranslation.vue')
   },
   {
     path: '/manage',
     name: 'Manage',
     //meta: {requireAuth: true,},
-    component: () => import('../views/Manage')
+    component: () => import('../views/useless/Manage')
   },
 
   //below are the simple links made by Yutan Wu testings
@@ -38,7 +38,7 @@ const routes = [
     path: '/test',
     name: 'Test',
     //meta: {requireAuth: true,  },
-    component: () => import('../views/Test.vue')
+    component: () => import('../views/Translation.vue')
   },
   {
     path: '/about_us',

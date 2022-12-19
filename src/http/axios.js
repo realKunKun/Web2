@@ -1,4 +1,10 @@
-// src/http/axios.js
+//--
+// * @Author: KunLin Yu
+// * @Date: 2022-12-1 14:00
+// * @LastEditTime: 2022-12-20 00:01
+// * @Description: Interceptors File
+// * @FilePath: \vue3-element-admin\src\http\axios.js
+//
 import axios from 'axios'
 import { Modal, message } from 'ant-design-vue'
 

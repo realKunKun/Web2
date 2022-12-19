@@ -10,6 +10,8 @@ import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import VueSimpleAlert from "vue3-simple-alert";
 import axios from 'axios'
+import { s3Layer } from 'vue3-layer';
+import 'vue3-layer/dist/s3Layer.css';
 
 const app = createApp(App)
 axios.defaults.baseURL = '/api'
@@ -17,5 +19,7 @@ for (let iconName in ELIcons) {
     app.component(iconName, ELIcons[iconName])
 }
 app.config.globalProperties.$axios = axios
+app.component('s3-layer', s3Layer);
+
 app.use(store).use(router).use(naive).use(ElementPlus).use(Antd).use(VueSimpleAlert).mount('#app')
 

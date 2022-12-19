@@ -1,7 +1,17 @@
-// src/http/api.js
+//
+// @Author: KunLin Yu
+// * @Date: 2022-12-1 14:00
+// * @LastEditTime: 2022-12-20 00:01
+// * @Description: Application Program Interface File
+// * @FilePath: \vue3-element-admin\src\http\api.js
+//
 import Service from './axios.js'
 //Authentication
         // LogIn
+        //{
+        //   "password": "string",
+        //   "username": "string"
+        // }
         export const login = (data) => {
             return Service({
                 url: '/auth/login',
@@ -12,6 +22,11 @@ import Service from './axios.js'
 
         //Authentication
         // Register
+        //{
+        //   "email": "string",
+        //   "password": "string",
+        //   "username": "string"
+        // }
         export const register = (data) => {
             return Service({
                 url: '/auth/register',
@@ -20,16 +35,24 @@ import Service from './axios.js'
             })
         };
 
-
 //Project management
         //GetALlGroups
-        export const getALlGroups = data => {
+        export const getALlGroups = (page,size) => {
             return Service({
-                url: '/proj' + data,
+                url: '/proj?page='+page+'&size='+size ,
                 method: 'get',
             })
         }
         //Create new project
+        //{
+        //   "id": 0,
+        //   "name": "string",
+        //   "oriLang": "string",
+        //   "owner": 0,
+        //   "tags": "string",
+        //   "tarLang": "string",
+        //   "type": 0
+        // }
         export const createNewProject = data => {
             return Service({
                 url: '/proj',
@@ -53,6 +76,12 @@ import Service from './axios.js'
             })
         }
         //create a new categorise {proj_id}/category
+        //{
+        //   "comment": "string",
+        //   "id": 0,
+        //   "name": "string",
+        //   "projId": 0
+        // }
         export const createNewCategorise = (data,num) => {
             return Service({
                 url: '/proj/'+num+"/category",
@@ -141,15 +170,17 @@ import Service from './axios.js'
         //Query translations that are similar to the provided one.
         export const getSimilar = (target,thershold,limit) =>{
              return Service({
-                 url:'/trans/trans/similar',
+                 url:'/trans/trans/similar?target='+target+'&thershold='+thershold+'&limit='+limit,
                  method:'get',
-                 target,
-                 thershold,
-                 limit
              })
         }
 //Category Operation
         //Update a category
+        //data like this:
+        //  "comment": "string",
+        //   "id": 0,
+        //   "name": "string",
+        //   "projId": 0
         export const updateCategory = (num,data) =>{
                return Service({
                    url:'/category/'+num,
@@ -172,6 +203,11 @@ import Service from './axios.js'
             })
         }
         //Create a new file in specified category.
+        //{
+        //   "comment": "string",
+        //   "converter": "string",
+        //   "filename": "string"
+        // }
         export const createCategory = (num,data) =>{
             return Service({
                 url:'/category/'+num+'/files',
@@ -188,6 +224,12 @@ import Service from './axios.js'
                })
         }
         //Update specified file.
+        //data like this
+        //  "categoryId": 0,
+        //   "comment": "string",
+        //   "converter": "string",
+        //   "id": 0,
+        //   "name": "string"
         export const updateFile = (num,data) =>{
                return Service({
                    url:'/proj/file/'+num,
@@ -211,6 +253,13 @@ import Service from './axios.js'
             })
         }
         //import text value to file
+        //[
+        //   {
+        //     "comment": "string",
+        //     "marked": true,
+        //     "oriText": "string"
+        //   }
+        // ]
         export const importTextToFile = (num,data) =>{
              return Service({
                  url:'/proj/file/'+num+'/contents',
@@ -288,11 +337,10 @@ import Service from './axios.js'
             })
         }
         //Query Terminology
-        export const queryTerminologies = (pid,data)  =>{
+        export const queryTerminologies = (projId,oriWord)  =>{
             return Service({
-                url:'/proj/'+{pid}+'/term/query',
+                url:'/proj/{pid}/term/query?projId='+projId+'&oriWord='+oriWord,
                 method:'get',
-                data
             })
         }
 //Terminology Manipulation
@@ -304,14 +352,10 @@ import Service from './axios.js'
                })
         }
         //Update a terminology by ID
-        export const updataSpecifiedTerminologies = (id,comment,committer,oriWord,tarWord) =>{
+        export const updataSpecifiedTerminologies = (id,comment,committer,oriWord,projId,tarWord) =>{
             return Service({
-                url:'/term/'+id,
+                url:'/term/'+id+'?comment='+comment+'&committer='+committer+'&oriWord='+oriWord+'&projId='+projId+'&tarWord='+tarWord,
                 method:'put',
-                comment:comment,
-                committer:committer,
-                oriWord:oriWord,
-                tarWord:tarWord
             })
         }
         //Delete a terminology by ID

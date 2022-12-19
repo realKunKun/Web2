@@ -46,7 +46,7 @@
 
 import { login } from "@/http/api";
 import router from "@/router";
-
+import { layer } from "vue3-layer";
 
 export default {
   name: "login",
@@ -107,7 +107,10 @@ export default {
         showClose:true
       })
     },
-    register() {},
+    register() {
+      layer.msg("听君一席话");
+
+    },
   },
 };
 
@@ -162,17 +165,5 @@ export default {
   color: #606266;
 }
 
-/*ui*/
-/* /deep/ .el-form-item__label {
-  font-weight: bolder;
-  font-size: 15px;
-  text-align: left;
-}
-
-/deep/ .el-button {
-  width: 100%;
-  margin-bottom: 10px;
-
-} */
 </style>
 

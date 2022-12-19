@@ -55,8 +55,9 @@ import {
 import {
   ElMessageBox
 } from "element-plus";
-import Dialog from "./dialog.vue";
-import Detail from "./detail.vue";
+import Dialog from "./tool/dialog.vue";
+import Detail from "./tool/detail.vue";
+import {createNewProject} from "@/http/api";
 
 export default {
 
@@ -69,7 +70,8 @@ export default {
       dialogShow: false, // Add a new/edit it
       detailShow: false, // View dialog
       rowInfo: {
-      }, // new or edit
+
+              }, // new or edit
       title: "", // new or modify
       projectInfo: [
         {
@@ -103,13 +105,17 @@ export default {
     });
 
     const method = reactive({
-
       handleNew() {
-
         data.title = "Add New";
         data.rowInfo = {
+
         };
+       // const postData = [data.rowInfo]
+        console.log(data.rowInfo)
+       // createNewProject(){}
         data.dialogShow = true;
+
+
       },
       handleDetail(val) {
 

@@ -1,161 +1,201 @@
-
+<!--
+ * @Author: Yutan Wu
+ * @Date: 2022-11-23 12:38:25
+ * @LastEditTime: 2022-11-23 12:38:25
+ * @LastEditors: Yutan Wu
+ * @Description: Test the translation page, it is a copy of translation.vue with UI decoration
+ * @FilePath: \vue3-element-admin\src\view\Translation.vue
+-->
 <template>
-  <div class="grid">
-    <div class="main">
-        <div class="sub-grid1">
-          <table>
-            <tr v-for="(item,index) in arr" v-on:click="choose(item,index)">
-              <td>
-                <el-button type="info" style="width: 10px;height: 10px;" circle></el-button>
-                {{item.string}}
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="sub-grid2">
-          <table>
-            <tr v-for="(item,index) in after_arr">
-              <td>
-                {{item.string}}
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="sub-grid3">
-          <table>
-            <tr v-for="(item,index) in info_arr">
-              <td>
-                {{item.string}}
-              </td>
-            </tr>
-          </table>
-        </div>
-    </div>
-    <div class="item2">
-      <table>
-        <tr v-for="(item,index) in machine_arr">
-          <td>
-            {{item.string}}
-          </td>
-        </tr>
-      </table>
-    </div>
-    <div class="item3">
-      <table>
-        <tr v-for="(item,index) in chosen_arr">
-          <td>
-            {{item.string}}
-          </td>
-        </tr>
-      </table>
-    </div>
-    <div class="item4">
-      <table>
-        <tr v-for="(item,index) in chosen_info_arr">
-          <td>
-            {{item.string}}
-          </td>
-        </tr>
-      </table>
-    </div>
-    <div class="item5">
-      <el-button type="primary" onclick="mySave()">SAVE</el-button>
-      <el-button type="primary" onclick="myDownload()">Download</el-button>
-      <el-button type="primary" onclick="myMark()">Mark</el-button>
-      <el-button type="primary" onclick="myRemove()">Remove</el-button>
-    </div>
+  <div class="common-layout">
+    <el-container>
+      <el-aside width="15%">Uploaded files
+
+        <!-- upload files -->
+        <n-upload action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f" :headers="{ 'naive-info': 'hello!' }"
+          :data="{ 'naive-data': 'cool! naive!' }">
+          <n-button>Upload File</n-button>
+        </n-upload>
+      </el-aside>
+
+      <!-- translation pages  -->
+      <el-container>
+        <el-main style="height: 20rem;">The Translating Table
+          <el-scrollbar height="90%">
+            <!-- chooseOperation let you display choosed row info in the footer table -->
+            <el-table :key="keyNum" ref="MainTableRef" :data="tableData" highlight-current-row style="width: 100%"
+              @selection-change="handleSelectionChange" @row-click="chooseOperation" >
+              <el-table-column prop="origin" label="origin" width="auto" />
+              <el-table-column style="myMark()" prop="translation" label="translation" width="auto" />
+              <el-table-column prop="relation" label="relation" width="auto" />
+            </el-table>
+          </el-scrollbar>
+
+        </el-main>
+
+        <el-footer>
+          <hr>
+          <!-- the choosed list table-->
+          <el-table ref="singleTableRef" :data="tableAimedData" style="width: 100%"
+            @current-change="handleCurrentChange">
+            <el-table-column prop="origin" width="auto" />
+            <el-table-column prop="translation" width="auto" />
+            <el-table-column prop="relation" width="auto" />
+          </el-table>
+
+          <hr>
+          <!-- edit the translation -->
+          <el-input type="textarea" v-model="edit_translation" :autosize="{minRows:4,maxRows:6}" placeholder="Please input" @change="handleChange" clearable/>
+          <hr>
+
+          <div class="item5">
+            <el-button type="primary" @click="mySave">SAVE</el-button>
+            <el-button type="primary" @click="myDownload">Download</el-button>
+            <el-button type="primary" @click="myMark">Mark</el-button>
+            <el-button type="primary" @click="myRemove">Clear</el-button>
+            <el-button type="primary" @click="fresh">Fresh</el-button>
+          </div>
+        </el-footer>
+      </el-container>
+    </el-container>
   </div>
 </template>
-
+  
 <script>
+
+
+import {getTranslation, updateTranslation} from "@/http/api";
+
 export default {
-  data(){
-    return{
-      arr: [{'string':'this is first original text'},{'string':'this is second original text'},{'string':'this is third original text'},{'string':'this is forth original text'}],
-      after_arr:[{'string':'this is first translation'},{'string':'this is second translation'},{'string':'this is third translation'},{'string':'this is forth translation'}],
-      info_arr:[{'string':'this is related information'},{'string':'this is another related information'}],
-      machine_arr:[{'string':'this is machine translation'},{'string':'this is another machine translation'}],
-      chosen_arr:[],
-      chosen_info_arr:[],
-      jack : 'jack'
+  data() {
+    return {
+      keyNum:0,
+      index:0,
+      row: {  origin: '',
+              translation: '',
+              relation: ''},
+      //my data by Yutan Wu, why you do not use list? arr is hard to read.
+      edit_translation: '',
+      tableData: [
+        {
+          origin: 'I can eat glass, it doesn\'t hurt me.',
+          translation: '我能吃玻璃而不伤身体。',
+          relation: '[glass]->[玻璃]; Proofread',
+        },
+        {
+          origin: 'Computer science is beautiful.',
+          translation: '计算机科学十分美妙。',
+          relation: '[Computer Science]->[计算机科学]',
+        },
+        {
+          origin: 'Dummy',
+          translation: '占位',
+          relation: 'Proofread',
+        },
+        {
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
+        },
+        {
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
+        },
+        {
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
+        },
+        {
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
+        },
+        {
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
+        },
+        {
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
+        },
+        {
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
+        },
+        {
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
+        },
+        {
+          origin: 'Dummy',
+          translation: '占位',
+          relation: '',
+        },
+      ],
+      tableAimedData: [
+        {
+        },
+      ]
     }
   },
-  methods:{
-    choose(item, index){
-    this.chosen_arr=[]
-    this.chosen_info_arr=[]
-    this.chosen_arr.push(item)
-    this.chosen_info_arr.push(this.after_arr[index])
+  created: function() {
+    this.onload();
+  },
+  methods: {
+    fresh(){
+      getTranslation(1).then((res)=>{
+          console.log(res.data.desc)
+      })
+
     },
-    myRemove(){
-      this.chosen_arr=[]
-      this.chosen_info_arr=[]
+    myRemove() {
+      this.edit_translation = '';
     },
-    mySave(){
-      this.$alert("Hello Vue Simple Alert.");
+    mySave() {
+      this.keyNum++;
+      this.tableData[this.tableData.indexOf(this.row)].translation=this.edit_translation;
+      updateTranslation("nothing",1).then((res)=>{
+        console.log(res.data.desc)
+      })
     },
-    myDownload(){
-      this.$confirm("Are you sure?").then(() => {
-        //do something...
-      });
+    myDownload() {
+      this.$alert("this function is not completed yet.");
     },
-    myMark(){
-      this.$prompt("Input your name").then(text => {
-        // do somthing with text
-      });
+    myMark() {
+      this.$alert("this function is not completed yet.");
+    },
+    onload() {
+      this.chooseOperation(this.tableData[0]);
+    },
+    chooseOperation(row) {
+      this.tableAimedData = []
+      this.tableAimedData.push(row)
+      this.edit_translation=row.translation
+      this.row=row;
+    },
+    handleChange(){
+
     }
   }
 }
 </script>
 <style scoped>
-.grid{
-  display: grid;
-  grid-template-columns: repeat(4,1fr);
-  grid-template-rows: repeat(6,1fr);
-  height: 100%;
-  width: 100%;
-  font-size: 25px;
-}
-
-.grid>div{
-  margin: 2px;
-  min-height: 400px;
-  background-image: url("../assets/translationpage.jpg");
-}
-
-.main{
-  display: grid;
-  grid-column: span 3;
-  grid-row: span 3;
-  grid-template-columns: repeat(3,1fr);
-  grid-template-rows: repeat(1,3fr);
-}
-
-.sub-grid1,.sub-grid2,.sub-grid3{
-  max-width: 100%;
-  width: 100%;
-  display: block;
-  grid-column: span 1;
+.el-aside,
+.el-main {
   overflow: hidden;
+  margin: .5rem;
+  background: rgba(94, 173, 238, 0.3);
 }
 
-.item2{
-  grid-column: span 1;
-  grid-row: span 6;
+.el-footer {
+  height: 20rem;
+  margin: .5rem;
+  background: rgba(94, 173, 238, 0.3);
 }
-
-.item3,.item4,.item5{
-  grid-row: span 3;
-  grid-column: span 1;
-  overflow: hidden;
-}
-table{width:100%; max-width:100%;
-  margin: 20px auto 0;
-  border-spacing: 10px 10px;
-  }
-th{width:100%;}
-td{background-color:antiquewhite;width: 100%;}
-tr input{width:100%; height:30px;outline:none; border: 1px solid #333333;overflow:auto;WORD-WRAP: break-word;}
-tr{border: 1px solid #333333;}
-el-button{width: 100%;height: 100%;margin-top: 10px;}
 </style>
