@@ -64,78 +64,80 @@
 <script>
 
 
-import {getTranslation, updateTranslation} from "@/http/api";
+import {deleteTranlation, getTranslation, updateTranslation} from "@/http/api";
 
 export default {
   data() {
     return {
       keyNum:0,
       index:0,
-      row: {  origin: '',
-              translation: '',
-              relation: ''},
+      row: {  origin: {content:'', Id:0, remark:false},
+              translation: {content:'', Id:0, remark:false},
+              relation: {content:'', Id:0, remark:false}},
+      //update the structure of id(num), and remark(boolean) by Kunlin Yu 2022/12/21
       //my data by Yutan Wu, why you do not use list? arr is hard to read.
       edit_translation: '',
+
       tableData: [
         {
-          origin: 'I can eat glass, it doesn\'t hurt me.',
-          translation: '我能吃玻璃而不伤身体。',
-          relation: '[glass]->[玻璃]; Proofread',
+          origin: {content:'I can eat glass, it doesn\'t hurt me.',id:1, remark:false},
+          translation: {content: '我能吃玻璃而不伤身体。',id:1, remark:false},
+          relation: {content:'[glass]->[玻璃]; Proofread',id:1, remark:false},
         },
         {
-          origin: 'Computer science is beautiful.',
-          translation: '计算机科学十分美妙。',
-          relation: '[Computer Science]->[计算机科学]',
+          origin: {content: 'Computer science is beautiful.',id:2, remark:false},
+          translation: {content: '计算机科学十分美妙。',id:2, remark:false},
+          relation: {content: '[Computer Science]->[计算机科学]', id:2, remark:false},
         },
         {
-          origin: 'Dummy',
-          translation: '占位',
-          relation: 'Proofread',
+          origin: {content:'Dummy',id:0, remark:false},
+          translation: {content: '占位',id:0, remark:false},
+          relation: {content:'Proofread',id:0, remark:false},
         },
         {
-          origin: 'Dummy',
-          translation: '占位',
-          relation: '',
+          origin: {content:'Dummy',id:0, remark:false},
+          translation: {content: '占位',id:0, remark:false},
+          relation: {content:'Proofread',id:0, remark:false},
         },
         {
-          origin: 'Dummy',
-          translation: '占位',
-          relation: '',
+          origin: {content:'Dummy',id:0, remark:false},
+          translation: {content: '占位',id:0, remark:false},
+          relation: {content:'Proofread',id:0, remark:false},
         },
         {
-          origin: 'Dummy',
-          translation: '占位',
-          relation: '',
+          origin: {content:'Dummy',id:0, remark:false},
+          translation: {content: '占位',id:0, remark:false},
+          relation: {content:'Proofread',id:0, remark:false},
         },
         {
-          origin: 'Dummy',
-          translation: '占位',
-          relation: '',
+          origin: {content:'Dummy',id:0, remark:false},
+          translation: {content: '占位',id:0, remark:false},
+          relation: {content:'Proofread',id:0, remark:false},
         },
         {
-          origin: 'Dummy',
-          translation: '占位',
-          relation: '',
+          origin: {content:'Dummy',id:0, remark:false},
+          translation: {content: '占位',id:0, remark:false},
+          relation: {content:'Proofread',id:0, remark:false},
         },
         {
-          origin: 'Dummy',
-          translation: '占位',
-          relation: '',
+          origin: {content:'Dummy',id:0, remark:false},
+          translation: {content: '占位',id:0, remark:false},
+          relation: {content:'Proofread',id:0, remark:false},
         },
         {
-          origin: 'Dummy',
-          translation: '占位',
-          relation: '',
+          origin: {content:'Dummy',id:0, remark:false},
+          translation: {content: '占位',id:0, remark:false},
+          relation: {content:'Proofread',id:0, remark:false},
         },
         {
-          origin: 'Dummy',
-          translation: '占位',
-          relation: '',
+          origin: {content:'Dummy',id:0, remark:false},
+          translation: {content: '占位',id:0, remark:false},
+          relation: {content:'Proofread',id:0, remark:false},
         },
         {
-          origin: 'Dummy',
-          translation: '占位',
-          relation: '',
+          origin: {content:'Dummy',id:0, remark:false},
+          translation: {content: '占位',id:0, remark:false},
+          relation: {content:'Proofread',id:0, remark:false},
         },
       ],
       tableAimedData: [
@@ -149,13 +151,15 @@ export default {
   },
   methods: {
     fresh(){
-      getTranslation(1).then((res)=>{
-          console.log(res.data.desc)
-      })
-
+      for(let i=0;i<=10;i++){
+        getTranslation(i).then((res)=>{
+          this.tableData[i]=res.data
+        })
+      }
     },
     myRemove() {
       this.edit_translation = '';
+      deleteTranlation(this.row.translation.id)
     },
     mySave() {
       this.keyNum++;
@@ -169,6 +173,7 @@ export default {
     },
     myMark() {
       this.$alert("this function is not completed yet.");
+
     },
     onload() {
       this.chooseOperation(this.tableData[0]);

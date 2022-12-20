@@ -55,8 +55,9 @@
         type: Object,
         default() {
         
-          return {
-        };
+            return {
+
+          };
         },
       },
       arrayNum: {
@@ -72,6 +73,9 @@
         
         dialogFlag: false,
         formData: {
+          ProjectName : "",
+          ProjectTag : 0 ,
+          ProjectDiscription : ""
         },
       });
       const method = reactive({
@@ -105,9 +109,8 @@
       });
       onMounted(() => {
         
-        data.formData = Object.assign({
-        }, props.rowInfo);
-        data.dialogFlag = props.rowInfo;
+        data.formData = Object.assign({}, props.rowInfo);
+       // data.dialogFlag = props.rowInfo;
       });
       return {
          ...toRefs(data), ...method };

@@ -39,8 +39,11 @@ import Service from './axios.js'
         //GetALlGroups
         export const getALlGroups = (page,size) => {
             return Service({
-                url: '/proj?page='+page+'&size='+size ,
+                //url: '/proj?page='+page+'&size='+size ,
+                url: '/proj',
                 method: 'get',
+                page:page,
+                size:size
             })
         }
         //Create new project
@@ -67,12 +70,18 @@ import Service from './axios.js'
                 method: 'delete'
             })
         };
-
+        //Page and size will jointly determine the returned data.
+        // page represents the number of pages, and size represents the amount of data per page.
+        // For example, if you enter page=4 size=5, you will get the 16th to 20th data.
+        // Enter page=1 size=10,  and you will get the 1st to 10th data.
+        // If the page or size exceeds their valid range, the backend may report an error
         //get Categorise
-        export const getCategorise = num => {
+        export const getCategorise = (num,page,size) => {
             return Service({
                 url: '/proj' + num+ "/category",
                 method: 'get',
+                page:page,
+                size:size
             })
         }
         //create a new categorise {proj_id}/category
@@ -99,6 +108,16 @@ import Service from './axios.js'
                 method: 'get'
             })
         }
+        //{
+        //   "disable": true,
+        //   "email": "string",
+        //   "id": 0,
+        //   "password": "string",
+        //   "rating": 0,
+        //   "role": "string",
+        //   "salt": "string",
+        //   "username": "string"
+        // }
         //Create a New User (Admin)
         export const createUser = data =>{
              return Service({
@@ -112,9 +131,12 @@ import Service from './axios.js'
               return Service({
                   url:'/user/user/'+num+'/disable',
                   method:'put',
-                  disable// boolean
+                  disable:disable// boolean
               })
         }
+        // [
+        //   "string"
+        // ]
         //change role of user
         export const changeUserRole = (num,data) =>{
             return Service({
@@ -132,6 +154,7 @@ import Service from './axios.js'
             })
         }
         //Update an exsiting translation by its id.
+        //string
         export const updateTranslation = (data,num) =>{
             return Service({
                 url:'/trans/trans/'+num,
@@ -203,7 +226,7 @@ import Service from './axios.js'
             })
         }
         //Create a new file in specified category.
-        //{
+        // {
         //   "comment": "string",
         //   "converter": "string",
         //   "filename": "string"
@@ -238,6 +261,7 @@ import Service from './axios.js'
                })
         }
         //Update File Comment
+        //string
         export const updateFileCommemnt = (num,data) =>{
                return Service({
                    url:'/proj/file/'+num+'/comment',
@@ -275,6 +299,7 @@ import Service from './axios.js'
             })
         }
         //Rename the file.
+        //string
         export const renameFile = (num,data) =>{
             return Service({
                 url:'/proj/file/'+num+'/name',

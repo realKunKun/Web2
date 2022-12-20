@@ -20,6 +20,8 @@ Service.interceptors.request.use(
     config=>{
         if(localStorage.getItem("access_token")){
             config.headers.Authorization = localStorage.getItem('access_token');
+            console.log(localStorage.getItem('access_token'))
+            console.log(config.headers)
         }
         return config
     },error=>{
@@ -35,14 +37,70 @@ Service.interceptors.request.use(
 
 // axios respone拦截器
 Service.interceptors.response.use(
-    res=>{
-        if(res.status === 200){
-            Modal.info({
-                title: 'message',
-                content: "Successful！",
-            })
-            return res;
-        }
+    res=> {
+        if (res.status === 200) {
+            switch (res.data.error) {
+                case 0:
+                    Modal.info({
+                        title: 'message',
+                        content: "operation completed successfully",
+                    })
+                    break;
+                case -1:
+                    Modal.info({
+                        title: 'message',
+                        content: "general error",
+                    })
+                    break;
+                case -100:
+                    Modal.info({
+                        title: 'message',
+                        content: "not login",
+                    })
+                    break;
+                case -101:
+                    Modal.info({
+                        title: 'message',
+                        content: "access denined",
+                    })
+                    break;
+                case -102:
+                    Modal.info({
+                        title: 'message',
+                        content: "login error",
+                    })
+                    break;
+                case -103:
+                    Modal.info({
+                        title: 'message',
+                        content: "user blocked",
+                    })
+                    break;
+                case -105:
+                    Modal.info({
+                        title: 'message',
+                        content: "project access denied",
+                    })
+                    break;
+                case -400:
+                    Modal.info({
+                        title: 'message',
+                        content: "this name has been used",
+                    })
+                    break;
+                case 9000:
+                    Modal.info({
+                        title: 'message',
+                        content: "internal error\n",
+                    })
+                    break;
+                default:
+                    Modal.info({
+                        title:'error',
+                        content:'unknown error, error code: ' + res.data.error + res.data.desc
+                    })
+            }
+    }
         return res;
     },
     error=>{
@@ -62,8 +120,8 @@ Service.interceptors.response.use(
                 break
             default:
                 Modal.confirm({
-                    title: '提示',
-                    content: `连接出错(${error.response.status})！`,
+                    title: 'Error Note',
+                    content: `(${error.response.status})！`,
                 });
         }
         return Promise.reject(error.response.data)

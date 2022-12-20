@@ -50,14 +50,14 @@
 
 <script>
 import {
-  reactive, computed, toRefs, ref
+  reactive, computed, toRefs, ref, toRaw
 } from "vue";
 import {
   ElMessageBox
 } from "element-plus";
 import Dialog from "./tool/dialog.vue";
 import Detail from "./tool/detail.vue";
-import {createNewProject} from "@/http/api";
+import {createNewProject, getALlGroups} from "@/http/api";
 
 export default {
 
@@ -106,16 +106,10 @@ export default {
 
     const method = reactive({
       handleNew() {
-        data.title = "Add New";
-        data.rowInfo = {
-
-        };
-       // const postData = [data.rowInfo]
-        console.log(data.rowInfo)
-       // createNewProject(){}
-        data.dialogShow = true;
-
-
+        getALlGroups(1,1).then((res)=>{
+          console.log(res.data)
+          console.log(res.data.desc)
+        })
       },
       handleDetail(val) {
 
@@ -170,11 +164,11 @@ export default {
         data.detailShow = false;
       },
     });
-
-
     return {
       search,
-      ...toRefs(data),
+      data,
+      //...toRefs(data),
+      Getid : toRefs(data.projectInfo,"id"),
       ...method,
       filteredSearch
     };

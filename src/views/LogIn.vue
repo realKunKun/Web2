@@ -79,7 +79,6 @@ export default {
     login(form) {
       window.localStorage.removeItem('access_token')
       this.$refs[form].validate((valid) => {
-        console.log(form.toString())
         if (valid) {
           login(this.form)
               .then((res) => {
