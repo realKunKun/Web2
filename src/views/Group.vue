@@ -29,6 +29,7 @@
             <el-table-column prop="ProjectDiscription" label="Project Discription" />
             <el-table-column fixed="right" label="Operations">
               <template #default="{ row }">
+                <el-button type="text" size="small" @click="handleOpen(row)">Open</el-button>
                 <el-button type="text" size="small" @click="handleDetail(row)">View</el-button>
                 <el-button type="text" size="small" @click="handleEdit(row)">Edit</el-button>
                 <el-button type="text" size="small" @click="handleDel(row)">Delete</el-button>
@@ -57,7 +58,7 @@ import {
 } from "element-plus";
 import Dialog from "./tool/dialog.vue";
 import Detail from "./tool/detail.vue";
-import {createNewProject, getALlGroups} from "@/http/api";
+import { createNewProject, getALlGroups } from "@/http/api";
 
 export default {
 
@@ -66,12 +67,12 @@ export default {
   },
   setup() {
     const search = ref('')//search content
-    const data = reactive({
+    let data = reactive({
       dialogShow: false, // Add a new/edit it
       detailShow: false, // View dialog
       rowInfo: {
 
-              }, // new or edit
+      }, // new or edit
       title: "", // new or modify
       projectInfo: [
         {
@@ -105,23 +106,39 @@ export default {
     });
 
     const method = reactive({
+      //create a new project
       handleNew() {
-        getALlGroups(1,1).then((res)=>{
+        data.title = "New Project";
+        data.rowInfo = {
+      };
+        data.dialogShow = true;
+        getALlGroups(1, 1).then((res) => {
           console.log(res.data)
           console.log(res.data.desc)
         })
       },
+      //open the project
+      handleOpen() {
+        //to do
+        this.$router.push({
+          path: "/about_us",
+          params: { data: 'query' }
+        })
+      },
+      //show the attributes of the project
       handleDetail(val) {
 
         data.detailShow = true;
         data.rowInfo = val;
       },
+      //edit the attributes of the project
       handleEdit(val) {
 
         data.title = "Modify";
         data.dialogShow = true;
         data.rowInfo = val;
       },
+      //delete the project
       handleDel(val) {
 
         ElMessageBox.confirm("Are you sure to delete this information?", "Hint", {
@@ -164,13 +181,19 @@ export default {
         data.detailShow = false;
       },
     });
+
+    //get first row project name
+    const getValue = computed(() => {
+      return data.projectInfo[0].ProjectName
+    });
+    
     return {
       search,
-      data,
-      //...toRefs(data),
-      Getid : toRefs(data.projectInfo,"id"),
+      ...toRefs(data),
       ...method,
-      filteredSearch
+      filteredSearch,
+      //get row 0 from first row of project info data
+      getValue
     };
   },
 };

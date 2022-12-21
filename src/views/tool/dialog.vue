@@ -73,9 +73,9 @@
         
         dialogFlag: false,
         formData: {
-          ProjectName : "",
-          ProjectTag : 0 ,
-          ProjectDiscription : ""
+           ProjectName : "",
+           ProjectTag : "" ,
+           ProjectDiscription : ""
         },
       });
       const method = reactive({
@@ -95,7 +95,7 @@
         submitForm() {
         
           method.handleClose();
-          if (props.rowInfo.name) {
+          if (props.rowInfo.id || props.rowInfo.ProjectName || props.rowInfo.ProjectTag || props.rowInfo.ProjectDiscription) {
         
             // modify the dialog
             emit("editRow", data.formData);
@@ -110,7 +110,7 @@
       onMounted(() => {
         
         data.formData = Object.assign({}, props.rowInfo);
-       // data.dialogFlag = props.rowInfo;
+        data.dialogFlag = props.rowInfo;
       });
       return {
          ...toRefs(data), ...method };
