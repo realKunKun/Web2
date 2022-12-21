@@ -84,6 +84,8 @@ export default {
               .then((res) => {
                 localStorage.setItem("access_token", res.data.data);
                 router.push('/test');
+
+
               })
         } else {
           return false;

@@ -71,74 +71,108 @@ export default {
     return {
       keyNum:0,
       index:0,
-      row: {  origin: {content:'', Id:0, remark:false},
-              translation: {content:'', Id:0, remark:false},
-              relation: {content:'', Id:0, remark:false}},
+      row: {  origin: '',
+              translation: '',
+              relation: '',
+              id:0,
+              remark:false},
       //update the structure of id(num), and remark(boolean) by Kunlin Yu 2022/12/21
       //my data by Yutan Wu, why you do not use list? arr is hard to read.
       edit_translation: '',
 
       tableData: [
         {
-          origin: {content:'I can eat glass, it doesn\'t hurt me.',id:1, remark:false},
-          translation: {content: '我能吃玻璃而不伤身体。',id:1, remark:false},
-          relation: {content:'[glass]->[玻璃]; Proofread',id:1, remark:false},
+          origin: "I can eat glass, it doesn't hurt me.",
+          translation: '我能吃玻璃而不伤身体。',
+          relation: '[glass]->[玻璃]; Proofread',
+          id:1,
+          remark:false
         },
         {
-          origin: {content: 'Computer science is beautiful.',id:2, remark:false},
-          translation: {content: '计算机科学十分美妙。',id:2, remark:false},
-          relation: {content: '[Computer Science]->[计算机科学]', id:2, remark:false},
+          origin:'Computer science is beautiful.',
+          translation:  '计算机科学十分美妙。',
+          relation: '[Computer Science]->[计算机科学]',
+          id:2,
+          remark: false
         },
         {
-          origin: {content:'Dummy',id:0, remark:false},
-          translation: {content: '占位',id:0, remark:false},
-          relation: {content:'Proofread',id:0, remark:false},
+          origin: 'Dummy',
+          translation: '占位',
+          relation: 'Proofread',
+          id:3,
+          remake:false
         },
         {
-          origin: {content:'Dummy',id:0, remark:false},
-          translation: {content: '占位',id:0, remark:false},
-          relation: {content:'Proofread',id:0, remark:false},
+          origin: 'Dummy',
+          translation: '占位',
+          relation: 'Proofread',
+          id:4,
+          remake:false
         },
         {
-          origin: {content:'Dummy',id:0, remark:false},
-          translation: {content: '占位',id:0, remark:false},
-          relation: {content:'Proofread',id:0, remark:false},
+          origin: 'Dummy',
+          translation: '占位',
+          relation: 'Proofread',
+          id:5,
+          remake:false
         },
         {
-          origin: {content:'Dummy',id:0, remark:false},
-          translation: {content: '占位',id:0, remark:false},
-          relation: {content:'Proofread',id:0, remark:false},
+          origin: 'Dummy',
+          translation: '占位',
+          relation: 'Proofread',
+          id:6,
+          remake:false
         },
         {
-          origin: {content:'Dummy',id:0, remark:false},
-          translation: {content: '占位',id:0, remark:false},
-          relation: {content:'Proofread',id:0, remark:false},
+          origin: 'Dummy',
+          translation: '占位',
+          relation: 'Proofread',
+          id:7,
+          remake:false
         },
         {
-          origin: {content:'Dummy',id:0, remark:false},
-          translation: {content: '占位',id:0, remark:false},
-          relation: {content:'Proofread',id:0, remark:false},
+          origin: 'Dummy',
+          translation: '占位',
+          relation: 'Proofread',
+          id:8,
+          remake:false
         },
         {
-          origin: {content:'Dummy',id:0, remark:false},
-          translation: {content: '占位',id:0, remark:false},
-          relation: {content:'Proofread',id:0, remark:false},
+          origin: 'Dummy',
+          translation: '占位',
+          relation: 'Proofread',
+          id:9,
+          remake:false
         },
         {
-          origin: {content:'Dummy',id:0, remark:false},
-          translation: {content: '占位',id:0, remark:false},
-          relation: {content:'Proofread',id:0, remark:false},
+          origin: 'Dummy',
+          translation: '占位',
+          relation: 'Proofread',
+          id:10,
+          remake:false
         },
-        {
-          origin: {content:'Dummy',id:0, remark:false},
-          translation: {content: '占位',id:0, remark:false},
-          relation: {content:'Proofread',id:0, remark:false},
-        },
-        {
-          origin: {content:'Dummy',id:0, remark:false},
-          translation: {content: '占位',id:0, remark:false},
-          relation: {content:'Proofread',id:0, remark:false},
-        },
+      ],
+      idHash:[
+        {pageId:1,
+        backendId:0},
+        {pageId:2,
+          backendId:0},
+        {pageId:3,
+          backendId:0},
+        {pageId:4,
+          backendId:0},
+        {pageId:5,
+          backendId:0},
+        {pageId:6,
+          backendId:0},
+        {pageId:7,
+          backendId:0},
+        {pageId:8,
+          backendId:0},
+        {pageId:9,
+          backendId:0},
+        {pageId:10,
+          backendId:0},
       ],
       tableAimedData: [
         {

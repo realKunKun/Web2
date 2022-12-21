@@ -36,6 +36,7 @@
   <script>
   import {
          reactive, toRefs, watch, ref, h, onMounted, computed } from "vue";
+  import {createNewProject} from "@/http/api";
   export default {
         
     props: {
@@ -105,6 +106,9 @@
             data.formData["id"] = props.arrayNum + 1;
             emit("addRow", data.formData);
           }
+          createNewProject({id:1,name: props.rowInfo.ProjectName,oriLang:"English",owner:0,}).then((res) =>{
+
+          })
         },
       });
       onMounted(() => {

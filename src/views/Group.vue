@@ -13,6 +13,7 @@
         active-text-color="#ffd04b">
         <el-menu-item index="/dyg1">Project Management</el-menu-item>
         <el-menu-item index="/deg1">Member Management</el-menu-item>
+        <el-menu-item index="/deg1" @click="">Refresh</el-menu-item>
       </el-menu>
     </el-aside>
     <el-container>
@@ -106,13 +107,17 @@ export default {
     });
 
     const method = reactive({
+      refreshPage(){
+
+      },
       //create a new project
       handleNew() {
         data.title = "New Project";
         data.rowInfo = {
       };
         data.dialogShow = true;
-        getALlGroups(1, 1).then((res) => {
+
+        getALlGroups(1, 10).then((res) => {
           console.log(res.data)
           console.log(res.data.desc)
         })

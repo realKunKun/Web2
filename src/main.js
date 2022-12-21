@@ -20,6 +20,7 @@ for (let iconName in ELIcons) {
 }
 app.config.globalProperties.$axios = axios
 app.component('s3-layer', s3Layer);
-
+//force to use global variable
+app.config.globalProperties.$userId = 0;
 app.use(store).use(router).use(naive).use(ElementPlus).use(Antd).use(VueSimpleAlert).mount('#app')
 
