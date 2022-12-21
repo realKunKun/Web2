@@ -58,6 +58,14 @@ const routes = [
     //meta: {requireAuth: true,  },
     component: () => import('../views/Group.vue')
   },
+
+  //only enter with the button in group project 'open'
+  {
+    path: '/project',
+    name: 'Project',
+    //meta: {requireAuth: true,  },
+    component: () => import('../views/Project.vue')
+  },
 ]
 
 const router = createRouter({

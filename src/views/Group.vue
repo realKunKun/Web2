@@ -1,17 +1,17 @@
 <!--
  * @Author: Yutan Wu
  * @Date: 2022-12-18 14:36
- * @LastEditTime: 2022-12-18 00:01
+ * @LastEditTime: 2022-12-21 23:24
  * @LastEditors: Yutan Wu
- * @Description: Group main page
- * @FilePath: \vue3-element-admin\src\view\Group.vue
+ * @Description: Group main page, the file in this vue is named 'project' but not 'category'
+ * @FilePath: \web2\src\view\Group.vue
 -->
 <template>
   <el-container>
     <el-aside class="group_nav" width="15%" style="height: 40rem;">Aside
-      <el-menu default-active="/keng" class="el-menu-demo" mode="vertical" background-color="#77b5fe" text-color="#fff"
-        active-text-color="#ffd04b">
-        <el-menu-item index="/dyg1">Project Management</el-menu-item>
+      <el-menu  :default-active="activeIndex" class="el-menu-demo" mode="vertical" background-color="#77b5fe"
+      text-color="#fff" active-text-color="#203773" @select="handleSelect" router="true">
+        <el-menu-item index="/group">Project Management</el-menu-item>
         <el-menu-item index="/deg1">Member Management</el-menu-item>
       </el-menu>
     </el-aside>
@@ -29,7 +29,8 @@
             <el-table-column prop="ProjectDiscription" label="Project Discription" />
             <el-table-column fixed="right" label="Operations">
               <template #default="{ row }">
-                <el-button type="text" size="small" @click="handleOpen(row)">Open</el-button>
+                <!-- 'project' is the path to Project.vue, row is the project row index -->
+                <el-button type="text" size="small" @click="handleOpen('project', row)">Open</el-button>
                 <el-button type="text" size="small" @click="handleDetail(row)">View</el-button>
                 <el-button type="text" size="small" @click="handleEdit(row)">Edit</el-button>
                 <el-button type="text" size="small" @click="handleDel(row)">Delete</el-button>
@@ -118,10 +119,10 @@ export default {
         })
       },
       //open the project
-      handleOpen() {
-        //to do
+      handleOpen(key) {
+        //todo
         this.$router.push({
-          path: "/about_us",
+          path: key,
           params: { data: 'query' }
         })
       },
