@@ -1,19 +1,19 @@
 <!--
  * @Author: Yutan Wu
  * @Date: 2022-12-18 14:36
- * @LastEditTime: 2022-12-18 00:01
+ * @LastEditTime: 2022-12-22 11:29
  * @LastEditors: Yutan Wu
  * @Description: Group main page
- * @FilePath: \vue3-element-admin\src\view\Group.vue
+ * @FilePath: \web2\src\view\Group.vue
 -->
 <template>
   <el-container>
     <el-aside class="group_nav" width="15%" style="height: 40rem;">Aside
-      <el-menu default-active="/keng" class="el-menu-demo" mode="vertical" background-color="#77b5fe" text-color="#fff"
-        active-text-color="#ffd04b">
-        <el-menu-item index="/dyg1">Project Management</el-menu-item>
-        <el-menu-item index="/deg1">Member Management</el-menu-item>
-        <el-menu-item index="/deg1" @click="">Refresh</el-menu-item>
+      <el-menu  :default-active="activeIndex" class="el-menu-demo" mode="vertical" background-color="#77b5fe"
+                text-color="#fff" active-text-color="#203773" @select="handleSelect" router="true">
+        <el-menu-item index="/group">Project Management</el-menu-item>
+        <!-- todo -->
+        <el-menu-item index="/group" @click="Refresh">Refresh</el-menu-item>
       </el-menu>
     </el-aside>
     <el-container>
@@ -30,7 +30,8 @@
             <el-table-column prop="ProjectDiscription" label="Project Discription" />
             <el-table-column fixed="right" label="Operations">
               <template #default="{ row }">
-                <el-button type="text" size="small" @click="handleOpen(row)">Open</el-button>
+                <!-- 'project' is the path to Categories.vue, row is the project row index -->
+                <el-button type="text" size="small" @click="handleOpen('Categories', row)">Open</el-button>
                 <el-button type="text" size="small" @click="handleDetail(row)">View</el-button>
                 <el-button type="text" size="small" @click="handleEdit(row)">Edit</el-button>
                 <el-button type="text" size="small" @click="handleDel(row)">Delete</el-button>
@@ -39,7 +40,7 @@
           </el-table>
           <!-- add or edit a dialog -->
           <Dialog v-if="dialogShow" v-model:dialogShow="dialogShow" :rowInfo="rowInfo" :title="title"
-            :arrayNum="projectInfo.length" @addRow="addRow" @editRow="editRow" />
+                  :arrayNum="projectInfo.length" @addRow="addRow" @editRow="editRow" />
           <!-- detail of the dialog -->
           <Detail v-if="detailShow" :rowInfo="rowInfo" @closeDetail="closeDetail" />
         </div>
@@ -59,7 +60,7 @@ import {
 } from "element-plus";
 import Dialog from "./tool/dialog.vue";
 import Detail from "./tool/detail.vue";
-import { createNewProject, getALlGroups } from "@/http/api";
+import {createNewProject, deleteProject, getALlGroups} from "@/http/api";
 
 export default {
 
@@ -107,28 +108,39 @@ export default {
     });
 
     const method = reactive({
-      refreshPage(){
-
+      //
+      Refresh() {
+        getALlGroups(1, 10).then((res) => {
+          for (let x=0;x<res.data.data.length;x++){
+            if (res.data.data.length>data.projectInfo.length){
+              data.projectInfo.push( {id: 3, ProjectName: "", ProjectTag: "", ProjectDiscription: "",})
+            }
+            data.projectInfo[x].ProjectName=res.data.data[x].name
+            data.projectInfo[x].ProjectTag=res.data.data[x].tags
+            data.projectInfo[x].ProjectDiscription="the original language is"+res.data.data[x].oriLang
+            data.projectInfo[x].id=res.data.data[x].id
+          }
+            if (data.projectInfo.length>res.data.data.length){
+              data.projectInfo.splice(res.data.data.length,(data.projectInfo.length-res.data.data.length))
+            }
+        })
       },
       //create a new project
       handleNew() {
         data.title = "New Project";
         data.rowInfo = {
-      };
+        };
         data.dialogShow = true;
-
-        getALlGroups(1, 10).then((res) => {
-          console.log(res.data)
-          console.log(res.data.desc)
-        })
       },
       //open the project
-      handleOpen() {
-        //to do
+      handleOpen(key,row) {
+        this.$paramsID = row.id
+        //todo
         this.$router.push({
-          path: "/about_us",
-          params: { data: 'query' }
-        })
+              path: key,
+              params: { id : row },
+            },
+        )
       },
       //show the attributes of the project
       handleDetail(val) {
@@ -142,6 +154,7 @@ export default {
         data.title = "Modify";
         data.dialogShow = true;
         data.rowInfo = val;
+
       },
       //delete the project
       handleDel(val) {
@@ -152,20 +165,24 @@ export default {
           cancelButtonText: "Cancel",
           type: "warning",
         })
-          .then(() => {
+            .then(() => {
 
-            method.handleSure(val);
-          })
-          .catch(() => {
+              method.handleSure(val);
+            })
+            .catch(() => {
 
-            // catch error
-          });
+              // catch error
+            });
       },
       handleSure(val) {
-
         this.dialogVisible = false;
         const index = data.projectInfo.findIndex((item) => item.id === val.id);
+        console.log(data.projectInfo[index].id)
+        deleteProject(data.projectInfo[index].id).then((res)=>{
+
+        });
         data.projectInfo.splice(index, 1);
+
       },
       // add row
       addRow(val) {
@@ -176,7 +193,7 @@ export default {
       editRow(val) {
 
         let index = data.projectInfo.findIndex(
-          (item, index) => item.id === val.id
+            (item, index) => item.id === val.id
         );
         data.projectInfo.splice(index, 1, val);
       },
@@ -191,7 +208,7 @@ export default {
     const getValue = computed(() => {
       return data.projectInfo[0].ProjectName
     });
-    
+
     return {
       search,
       ...toRefs(data),

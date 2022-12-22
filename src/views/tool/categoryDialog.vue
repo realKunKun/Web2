@@ -1,10 +1,10 @@
 <!--
  * @Author: Yutan Wu
- * @Date: 2022-12-18 14:37:25
- * @LastEditTime: 2022-12-18 14:49
+ * @Date: 2022-12-21 21:44
+ * @LastEditTime: 2022-12-21 23:24
  * @LastEditors: Yutan Wu
- * @Description: This is the dialog that in the 'Edit' button of the Group.vue
- * @FilePath: \vue3-element-admin\src\view\dialog.vue
+ * @Description: This is the catagoryDialog that in the 'Edit' button of the Categories.vue
+ * @FilePath: \vue3-element-admin\src\view\catagoryDialog.vue
 -->
 <template>
     <el-dialog :model-value="true" :title="title" @close="handleClose">
@@ -16,14 +16,11 @@
         class="demo-ruleForm"
         :size="formSize"
       >
-        <el-form-item label="Project Name: " prop="ProjectName">
-          <el-input v-model="formData.ProjectName"></el-input>
+        <el-form-item label="Category Name: " prop="CategoryName">
+          <el-input v-model="formData.CategoryName"></el-input>
         </el-form-item>
-        <el-form-item label="Project Tag: " prop="ProjectTag">
-          <el-input v-model="formData.ProjectTag"></el-input>
-        </el-form-item>
-        <el-form-item label="Project Discription: " prop="ProjectDiscription">
-          <el-input type="textarea" :autosize="{minRows:8}" v-model="formData.ProjectDiscription"></el-input>
+        <el-form-item label="Category Discription: " prop="CategoryDiscription">
+          <el-input type="textarea" :autosize="{minRows:8}" v-model="formData.CategoryDiscription"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm()">Confirm</el-button>
@@ -36,7 +33,6 @@
   <script>
   import {
          reactive, toRefs, watch, ref, h, onMounted, computed } from "vue";
-  import {createNewProject} from "@/http/api";
   export default {
         
     props: {
@@ -46,7 +42,7 @@
         type: String,
         default: "",
       },
-      dialogShow: {
+      categoryDialogShow: {
         
         type: Boolean,
         default: false,
@@ -74,9 +70,8 @@
         
         dialogFlag: false,
         formData: {
-           ProjectName : "",
-           ProjectTag : "" ,
-           ProjectDiscription : ""
+          CategoryName : "",
+          CategoryDiscription : ""
         },
       });
       const method = reactive({
@@ -84,7 +79,7 @@
         // close the dialog
         handleClose() {
         
-          emit("update:dialogShow", false);
+          emit("update:categoryDialogShow", false);
         },
         // reset the dialog
         resetForm() {
@@ -96,22 +91,16 @@
         submitForm() {
         
           method.handleClose();
-          if (props.rowInfo.id || props.rowInfo.ProjectName || props.rowInfo.ProjectTag || props.rowInfo.ProjectDiscription) {
+          if (props.rowInfo.id || props.rowInfo.CategoryName || props.rowInfo.CategoryDiscription) {
         
             // modify the dialog
             emit("editRow", data.formData);
-
           } else {
+        
             // add a new dialog to the data
-           // data.formData["id"] = props.arrayNum + 1;
-           // emit("addRow", data.formData);
-            createNewProject({id:1,name: data.formData.ProjectName,oriLang:"English",owner:0,tags:data.formData.ProjectTag,tarLang : "Chinese", type:0}).
-            then((res) =>{
-              if (res.data.error===0){
-              }})
+            data.formData["id"] = props.arrayNum + 1;
+            emit("addRow", data.formData);
           }
-
-
         },
       });
       onMounted(() => {

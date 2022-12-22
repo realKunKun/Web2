@@ -66,8 +66,9 @@ import Service from './axios.js'
         //Delete project
         export const deleteProject = num => {
             return Service({
-                url: '/proj' +num,
+                url: '/proj/'+num,
                 method: 'delete'
+
             })
         };
         //Page and size will jointly determine the returned data.
@@ -219,7 +220,7 @@ import Service from './axios.js'
             })
         }
         //List all files under the specified category.
-        export const getCategory = (num) =>{
+        export const getAllFile = (num) =>{
             return Service({
                 url:'/category/'+num+'/files',
                 method:'get'
@@ -231,7 +232,7 @@ import Service from './axios.js'
         //   "converter": "string",
         //   "filename": "string"
         // }
-        export const createCategory = (num,data) =>{
+        export const createFile = (num,data) =>{
             return Service({
                 url:'/category/'+num+'/files',
                 method:'post',
