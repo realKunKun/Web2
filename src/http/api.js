@@ -99,7 +99,23 @@ import Service from './axios.js'
                 data
             })
         };
-
+        //Update Project
+        //{
+        //   "id": 0,
+        //   "name": "string",
+        //   "oriLang": "string",
+        //   "owner": 0,
+        //   "tags": "string",
+        //   "tarLang": "string",
+        //   "type": 0
+        // }
+        export const updateProject = (num,data) => {
+            return Service({
+                url: '/proj/'+num,
+                method: 'put',
+                data
+            })
+        };
 
 // User Management
         //Get User Information by User ID

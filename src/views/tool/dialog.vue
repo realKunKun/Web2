@@ -36,7 +36,7 @@
   <script>
   import {
          reactive, toRefs, watch, ref, h, onMounted, computed } from "vue";
-  import {createNewProject} from "@/http/api";
+  import {createNewProject, updateProject} from "@/http/api";
   export default {
         
     props: {
@@ -100,7 +100,7 @@
         
             // modify the dialog
             emit("editRow", data.formData);
-
+            updateProject(props.rowInfo.id,{id:props.rowInfo.id,name: data.formData.ProjectName,oriLang:"English",owner:0,tags:data.formData.ProjectTag,tarLang : "Chinese", type:0})
           } else {
             // add a new dialog to the data
            // data.formData["id"] = props.arrayNum + 1;

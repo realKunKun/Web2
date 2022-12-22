@@ -27,11 +27,11 @@
 
 <script setup>//UI decoration setups
 import { ref } from 'vue'
+import router from "@/router";
 const activeIndex = ref('2')//default initial location is sign in/log in
 function handleSelect(key) {
-  this.$router.push({
-    path: key,
-    params: { data: 'query' }
+  router.push({
+    path: key
   })
 }
 </script>

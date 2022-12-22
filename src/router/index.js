@@ -60,7 +60,7 @@ const routes = [
   },
   //only enter with the button in group project 'open'
   {
-    path: '/Categories',
+    path: '/categories/:id',
     name: 'Categories',
     //meta: {requireAuth: true,  },
     component: () => import('../views/Categories.vue')
@@ -71,6 +71,7 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
+
 
 router.beforeEach((to,from,next)=>{
   if(to.meta.requireAuth){  // 判断该路由是否需要登录权限

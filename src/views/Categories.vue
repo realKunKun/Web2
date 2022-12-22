@@ -11,9 +11,10 @@
         <el-aside class="group_nav" width="15%" style="height: 40rem;">Aside
             <el-menu :default-active="activeIndex" class="el-menu-demo" mode="vertical" background-color="#77b5fe"
                 text-color="#fff" active-text-color="#203773" @select="handleSelect" router="true">
-                <el-menu-item index="/group" @click="backToProject">Project Management</el-menu-item>
+              <el-menu-item index="/categories"  >Categories Management</el-menu-item>
+                <el-menu-item index="/categories" @click="backToProject">Back to GroupPage</el-menu-item>
                 <!-- todo -->
-                <el-menu-item index="/group" @click="Refresh">Refresh</el-menu-item>
+                <el-menu-item index="/categories" @click="Refresh">Refresh</el-menu-item>
             </el-menu>
         </el-aside>
         <el-container>
@@ -29,7 +30,7 @@
                         <el-table-column prop="CategoryDiscription" label="Category Discription" />
                         <el-table-column fixed="right" label="Operations">
                             <template #default="{ row }">
-                              <el-button type="text" size="small" @click="handleOpen('Categories', row)">Open</el-button>
+                              <el-button type="text" size="small" @click="handleOpen('Translation', row)">Open</el-button>
                                 <el-button type="text" size="small" @click="handleDetail(row)">View</el-button>
                                 <el-button type="text" size="small" @click="handleEdit(row)">Edit</el-button>
                                 <el-button type="text" size="small" @click="handleDel(row)">Delete</el-button>
@@ -51,7 +52,7 @@
   
 <script>
 import {
-    reactive, computed, toRefs, ref, toRaw
+  reactive, computed, toRefs, ref, toRaw, getCurrentInstance
 } from "vue";
 import {
     ElMessageBox
@@ -60,8 +61,9 @@ import categoryDialog from "./tool/categoryDialog.vue";
 import categoryDetail from "./tool/categoryDetail.vue";
 
 //todo
-import {updateCategory, deleteCategory, getALlGroups, getCategorise, getCategory} from "@/http/api";
+import {updateCategory, deleteCategory, getCategorise} from "@/http/api";
 import router from "@/router";
+import {useRoute} from "vue-router";
 
 export default {
 
@@ -84,6 +86,7 @@ export default {
                     CategoryName: "Category1",
                     CategoryDiscription: "This is a category discription",
                 },
+
                 {
                     id: 2,
                     CategoryName: "Category2",
@@ -108,25 +111,9 @@ export default {
 
         const method = reactive({
           backToProject(){
+
             router.push("/Group")
           },
-          Refresh() {
-
-            getCategorise(this.$paramsID, 1,10).then((res) => {
-              for (let x=0;x<res.data.data.length;x++){
-                if (res.data.data.length>data.projectInfo.length){
-                  data.projectInfo.push( {id: 3, ProjectName: "", ProjectTag: "", ProjectDiscription: "",})
-                }
-                data.projectInfo[x].ProjectName=res.data.data[x].name
-                data.projectInfo[x].ProjectTag=res.data.data[x].tags
-                data.projectInfo[x].ProjectDiscription="the original language is"+res.data.data[x].oriLang
-                data.projectInfo[x].id=res.data.data[x].id
-              }
-              if (data.projectInfo.length>res.data.data.length){
-                data.projectInfo.splice(res.data.data.length,(data.projectInfo.length-res.data.data.length))
-              }
-            })
-            },
             //create a new category
             handleNew() {
                 data.title = "New Category";
@@ -220,6 +207,24 @@ export default {
             getValue
         };
     },
+  methods:{
+    Refresh() {
+      const route = useRoute();
+      console.log(route.params.id)
+      getCategorise(route.params.id, 1,10).then((res) => {
+        for (let x=0;x<res.data.data.length;x++){
+          if (res.data.data.length>data.categoryInfo.length){
+            data.categoryInfo.push( {id: 0, CategoryName: "", CategoryDiscription: "",})
+          }
+          data.categoryInfo[x].CategoryName=res.data.data[x].name
+          data.categoryInfo[x].CategoryDiscription="the original language is"+res.data.data[x].oriLang
+          data.categoryInfo[x].id=res.data.data[x].id
+        }
+        if (data.categoryInfo.length>res.data.data.length){
+          data.categoryInfo.splice(res.data.data.length,(data.categoryInfo.length-res.data.data.length))
+        }
+      })}
+  }
 };
 </script>
   

@@ -31,7 +31,7 @@
             <el-table-column fixed="right" label="Operations">
               <template #default="{ row }">
                 <!-- 'project' is the path to Categories.vue, row is the project row index -->
-                <el-button type="text" size="small" @click="handleOpen('Categories', row)">Open</el-button>
+                <el-button type="text" size="small" @click="handleOpen('/categories', row)">Open</el-button>
                 <el-button type="text" size="small" @click="handleDetail(row)">View</el-button>
                 <el-button type="text" size="small" @click="handleEdit(row)">Edit</el-button>
                 <el-button type="text" size="small" @click="handleDel(row)">Delete</el-button>
@@ -60,7 +60,8 @@ import {
 } from "element-plus";
 import Dialog from "./tool/dialog.vue";
 import Detail from "./tool/detail.vue";
-import {createNewProject, deleteProject, getALlGroups} from "@/http/api";
+import {deleteProject, getALlGroups} from "@/http/api";
+
 
 export default {
 
@@ -134,13 +135,13 @@ export default {
       },
       //open the project
       handleOpen(key,row) {
-        this.$paramsID = row.id
         //todo
         this.$router.push({
-              path: key,
-              params: { id : row },
-            },
-        )
+          name: "Categories",
+          params: {
+            id: row.id
+          }
+        })
       },
       //show the attributes of the project
       handleDetail(val) {
