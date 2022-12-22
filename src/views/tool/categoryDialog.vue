@@ -4,7 +4,7 @@
  * @LastEditTime: 2022-12-21 23:24
  * @LastEditors: Yutan Wu
  * @Description: This is the catagoryDialog that in the 'Edit' button of the Project.vue
- * @FilePath: \vue3-element-admin\src\view\catagoryD.vue
+ * @FilePath: \vue3-element-admin\src\view\catagoryDialog.vue
 -->
 <template>
     <el-dialog :model-value="true" :title="title" @close="handleClose">
@@ -42,7 +42,7 @@
         type: String,
         default: "",
       },
-      dialogShow: {
+      categoryDialogShow: {
         
         type: Boolean,
         default: false,
@@ -79,7 +79,7 @@
         // close the dialog
         handleClose() {
         
-          emit("update:dialogShow", false);
+          emit("update:categoryDialogShow", false);
         },
         // reset the dialog
         resetForm() {

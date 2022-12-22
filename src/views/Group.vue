@@ -1,7 +1,7 @@
 <!--
  * @Author: Yutan Wu
  * @Date: 2022-12-18 14:36
- * @LastEditTime: 2022-12-21 23:24
+ * @LastEditTime: 2022-12-22 11:29
  * @LastEditors: Yutan Wu
  * @Description: Group main page, the file in this vue is named 'project' but not 'category'
  * @FilePath: \web2\src\view\Group.vue
@@ -12,7 +12,8 @@
       <el-menu  :default-active="activeIndex" class="el-menu-demo" mode="vertical" background-color="#77b5fe"
       text-color="#fff" active-text-color="#203773" @select="handleSelect" router="true">
         <el-menu-item index="/group">Project Management</el-menu-item>
-        <el-menu-item index="/deg1">Member Management</el-menu-item>
+        <!-- todo -->
+        <el-menu-item index="/group">Member Management</el-menu-item>
       </el-menu>
     </el-aside>
     <el-container>
@@ -123,8 +124,10 @@ export default {
         //todo
         this.$router.push({
           path: key,
-          params: { data: 'query' }
-        })
+          params: { data: 'query' },
+          
+        },
+        )
       },
       //show the attributes of the project
       handleDetail(val) {

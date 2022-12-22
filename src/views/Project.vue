@@ -1,7 +1,7 @@
 <!--
  * @Author: Yutan Wu
  * @Date: 2022-12-21 21:27
- * @LastEditTime: 2022-12-21 23:24
+ * @LastEditTime: 2022-12-22 11:29
  * @LastEditors: Yutan Wu
  * @Description: Project main page, the file in this vue is named 'category' but not 'project'
  * @FilePath: \web2\src\view\Project.vue
@@ -11,8 +11,9 @@
         <el-aside class="group_nav" width="15%" style="height: 40rem;">Aside
             <el-menu :default-active="activeIndex" class="el-menu-demo" mode="vertical" background-color="#77b5fe"
                 text-color="#fff" active-text-color="#203773" @select="handleSelect" router="true">
-                <el-menu-item index="/group" @click="handleOpen">Project Management</el-menu-item>
-                <el-menu-item index="/deg1">Member Management</el-menu-item>
+                <el-menu-item index="/group">Project Management</el-menu-item>
+                <!-- todo -->
+                <el-menu-item index="/group">Member Management</el-menu-item>
             </el-menu>
         </el-aside>
         <el-container>
@@ -35,10 +36,10 @@
                         </el-table-column>
                     </el-table>
                     <!-- add or edit a dialog -->
-                    <Dialog v-if="dialogShow" v-model:dialogShow="dialogShow" :rowInfo="rowInfo" :title="title"
+                    <categoryDialog v-if="categoryDialogShow" v-model:categoryDialogShow="categoryDialogShow" :rowInfo="rowInfo" :title="title"
                         :arrayNum="categoryInfo.length" @addRow="addRow" @editRow="editRow" />
                     <!-- detail of the dialog -->
-                    <Detail v-if="detailShow" :rowInfo="rowInfo" @closeDetail="closeDetail" />
+                    <categoryDetail v-if="categoryDetailShow" :rowInfo="rowInfo" @closeDetail="closeDetail" />
                 </div>
             </el-main>
         </el-container>
@@ -68,12 +69,13 @@ export default {
     setup() {
         const search = ref('')//search content
         let data = reactive({
-            dialogShow: false, // Add a new/edit it
-            detailShow: false, // View dialog
+            categoryDialogShow: false, // Add a new/edit it
+            categoryDetailShow: false, // View dialog
             rowInfo: {
 
             }, // new or edit
             title: "", // new or modify
+            projectInfo: [],//push group row info to this list
             categoryInfo: [
                 {
                     id: 1,
@@ -103,12 +105,13 @@ export default {
         });
 
         const method = reactive({
+
             //create a new category
             handleNew() {
                 data.title = "New Category";
                 data.rowInfo = {
                 };
-                data.dialogShow = true;
+                data.categoryDialogShow = true;
                 //   getALlGroups(1, 1).then((res) => {
                 //     console.log(res.data)
                 //     console.log(res.data.desc)
@@ -125,15 +128,15 @@ export default {
             },
             //show the attributes of the category
             handleDetail(val) {
-
-                data.detailShow = true;
+                console.log("111");
+                data.categoryDetailShow = true;
                 data.rowInfo = val;
             },
             //edit the attributes of the category
             handleEdit(val) {
 
                 data.title = "Modify";
-                data.dialogShow = true;
+                data.categoryDialogShow = true;
                 data.rowInfo = val;
             },
             //delete the category
@@ -176,7 +179,7 @@ export default {
             // close the detail
             closeDetail() {
 
-                data.detailShow = false;
+                data.categoryDetailShow = false;
             },
         });
 
