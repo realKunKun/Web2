@@ -73,7 +73,8 @@ const router = createRouter({
 })
 
 
-router.beforeEach((to,from,next)=>{
+router.beforeEach( (to,from,next)=>{
+
   if(to.meta.requireAuth){  // 判断该路由是否需要登录权限
     if(localStorage.getItem("access_token")) {  // 从本地存储localStorage获取当前的token是否存在
       next()
@@ -87,5 +88,6 @@ router.beforeEach((to,from,next)=>{
       next()
     }
   }
+
 });
 export default router

@@ -12,8 +12,9 @@
       <el-aside width="15%">Uploaded files
 
         <!-- upload files -->
-        <n-upload action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f" :headers="{ 'naive-info': 'hello!' }"
-          :data="{ 'naive-data': 'cool! naive!' }">
+        <n-upload action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
+                  :headers="{ 'naive-info': 'hello!' }"
+                  :data="{ 'naive-data': 'cool! naive!' }">
           <n-button>Upload File</n-button>
         </n-upload>
       </el-aside>
@@ -23,11 +24,24 @@
         <el-main style="height: 20rem;">The Translating Table
           <el-scrollbar height="90%">
             <!-- chooseOperation let you display choosed row info in the footer table -->
-            <el-table :key="keyNum" ref="MainTableRef" :data="tableData" highlight-current-row style="width: 100%"
-              @selection-change="handleSelectionChange" @row-click="chooseOperation" >
-              <el-table-column prop="origin" label="origin" width="auto" />
-              <el-table-column style="myMark()" prop="translation" label="translation" width="auto" />
-              <el-table-column prop="relation" label="relation" width="auto" />
+            <el-table :key="keyNum"
+                      ref="MainTableRef"
+                      :data="tableData"
+                      style="width: 100%"
+                      @selection-change="handleSelectionChange"
+                      @row-click="chooseOperation"
+                      :row-class-name="tableRowClassName"
+                      :row-style="selectedstyle">
+              <el-table-column prop="origin"
+                               label="origin"
+                               width="auto" />
+              <el-table-column style="myMark()"
+                               prop="translation"
+                               label="translation"
+                               width="auto" />
+              <el-table-column prop="relation"
+                               label="relation"
+                               width="auto" />
             </el-table>
           </el-scrollbar>
 
@@ -36,46 +50,66 @@
         <el-footer>
           <hr>
           <!-- the choosed list table-->
-          <el-table ref="singleTableRef" :data="tableAimedData" style="width: 100%"
-            @current-change="handleCurrentChange">
-            <el-table-column prop="origin" width="auto" />
-            <el-table-column prop="translation" width="auto" />
-            <el-table-column prop="relation" width="auto" />
+          <el-table ref="singleTableRef"
+                    :data="tableAimedData"
+                    style="width: 100%"
+                    @current-change="handleCurrentChange">
+            <el-table-column prop="origin"
+                             width="auto" />
+            <el-table-column prop="translation"
+                             width="auto" />
+            <el-table-column prop="relation"
+                             width="auto" />
           </el-table>
 
           <hr>
           <!-- edit the translation -->
-          <el-input type="textarea" v-model="edit_translation" :autosize="{minRows:4,maxRows:6}" placeholder="Please input" @change="handleChange" clearable/>
+          <el-input type="textarea"
+                    v-model="edit_translation"
+                    :autosize="{minRows:4,maxRows:6}"
+                    placeholder="Please input"
+                    @change="handleChange"
+                    clearable />
           <hr>
 
           <div class="item5">
-            <el-button type="primary" @click="mySave">SAVE</el-button>
-            <el-button type="primary" @click="myDownload">Download</el-button>
-            <el-button type="primary" @click="myMark">Mark</el-button>
-            <el-button type="primary" @click="myRemove">Clear</el-button>
-            <el-button type="primary" @click="fresh">Fresh</el-button>
+            <el-button type="primary"
+                       @click="mySave">SAVE</el-button>
+            <el-button type="primary"
+                       @click="myDownload">Download</el-button>
+            <el-button type="primary"
+                       @click="myMark">Mark</el-button>
+            <el-button type="primary"
+                       @click="myRemove">Clear</el-button>
+            <el-button type="primary"
+                       @click="fresh">Fresh</el-button>
           </div>
         </el-footer>
       </el-container>
     </el-container>
   </div>
 </template>
-  
+
 <script>
 
 
-import {deleteTranlation, getTranslation, updateTranslation} from "@/http/api";
+import { deleteTranlation, getTranslation, updateTranslation } from "@/http/api";
 
 export default {
   data() {
     return {
-      keyNum:0,
-      index:0,
-      row: {  origin: '',
-              translation: '',
-              relation: '',
-              id:0,
-              remark:false},
+      activeindex: null,
+      stylecolor: false,
+      keyNum: 0,
+      index: 0,
+      rowindexs: '',
+      row: {
+        origin: '',
+        translation: '',
+        relation: '',
+        id: 0,
+        remark: false
+      },
       //update the structure of id(num), and remark(boolean) by Kunlin Yu 2022/12/21
       //my data by Yutan Wu, why you do not use list? arr is hard to read.
       edit_translation: '',
@@ -85,94 +119,114 @@ export default {
           origin: "I can eat glass, it doesn't hurt me.",
           translation: '我能吃玻璃而不伤身体。',
           relation: '[glass]->[玻璃]; Proofread',
-          id:1,
-          remark:false
+          id: 1,
+          remark: false
         },
         {
-          origin:'Computer science is beautiful.',
-          translation:  '计算机科学十分美妙。',
+          origin: 'Computer science is beautiful.',
+          translation: '计算机科学十分美妙。',
           relation: '[Computer Science]->[计算机科学]',
-          id:2,
+          id: 2,
           remark: false
         },
         {
           origin: 'Dummy',
           translation: '占位',
           relation: 'Proofread',
-          id:3,
-          remake:false
+          id: 3,
+          remake: false
         },
         {
           origin: 'Dummy',
           translation: '占位',
           relation: 'Proofread',
-          id:4,
-          remake:false
+          id: 4,
+          remake: false
         },
         {
           origin: 'Dummy',
           translation: '占位',
           relation: 'Proofread',
-          id:5,
-          remake:false
+          id: 5,
+          remake: false
         },
         {
           origin: 'Dummy',
           translation: '占位',
           relation: 'Proofread',
-          id:6,
-          remake:false
+          id: 6,
+          remake: false
         },
         {
           origin: 'Dummy',
           translation: '占位',
           relation: 'Proofread',
-          id:7,
-          remake:false
+          id: 7,
+          remake: false
         },
         {
           origin: 'Dummy',
           translation: '占位',
           relation: 'Proofread',
-          id:8,
-          remake:false
+          id: 8,
+          remake: false
         },
         {
           origin: 'Dummy',
           translation: '占位',
           relation: 'Proofread',
-          id:9,
-          remake:false
+          id: 9,
+          remake: false
         },
         {
           origin: 'Dummy',
           translation: '占位',
           relation: 'Proofread',
-          id:10,
-          remake:false
+          id: 10,
+          remake: false
         },
       ],
-      idHash:[
-        {pageId:1,
-        backendId:0},
-        {pageId:2,
-          backendId:0},
-        {pageId:3,
-          backendId:0},
-        {pageId:4,
-          backendId:0},
-        {pageId:5,
-          backendId:0},
-        {pageId:6,
-          backendId:0},
-        {pageId:7,
-          backendId:0},
-        {pageId:8,
-          backendId:0},
-        {pageId:9,
-          backendId:0},
-        {pageId:10,
-          backendId:0},
+      idHash: [
+        {
+          pageId: 1,
+          backendId: 0
+        },
+        {
+          pageId: 2,
+          backendId: 0
+        },
+        {
+          pageId: 3,
+          backendId: 0
+        },
+        {
+          pageId: 4,
+          backendId: 0
+        },
+        {
+          pageId: 5,
+          backendId: 0
+        },
+        {
+          pageId: 6,
+          backendId: 0
+        },
+        {
+          pageId: 7,
+          backendId: 0
+        },
+        {
+          pageId: 8,
+          backendId: 0
+        },
+        {
+          pageId: 9,
+          backendId: 0
+        },
+        {
+          pageId: 10,
+          backendId: 0
+        },
       ],
       tableAimedData: [
         {
@@ -180,14 +234,15 @@ export default {
       ]
     }
   },
-  created: function() {
+  created: function () {
     this.onload();
   },
   methods: {
-    fresh(){
-      for(let i=0;i<=10;i++){
-        getTranslation(i).then((res)=>{
-          this.tableData[i]=res.data
+    handleCurrentChange() { },
+    fresh() {
+      for (let i = 0; i <= 10; i++) {
+        getTranslation(i).then((res) => {
+          this.tableData[i] = res.data
         })
       }
     },
@@ -197,44 +252,72 @@ export default {
     },
     mySave() {
       this.keyNum++;
-      this.tableData[this.tableData.indexOf(this.row)].translation=this.edit_translation;
-      updateTranslation("nothing",1).then((res)=>{
+      this.tableData[this.tableData.indexOf(this.row)].translation = this.edit_translation;
+      updateTranslation("nothing", 1).then((res) => {
         console.log(res.data.desc)
       })
     },
     myDownload() {
-      this.$alert("this function is not completed yet.");
+      this.$alert("this function is not completed yet.").then(() => {
+        //do something...
+        this.rowindexs = ''
+      })
     },
-    myMark() {
-      this.$alert("this function is not completed yet.");
 
+    myMark() {
+      this.activeindex = this.rowindexs
+      this.stylecolor = !this.stylecolor
+      if (!this.stylecolor) {
+        this.rowindexs = ''
+      }
     },
     onload() {
       this.chooseOperation(this.tableData[0]);
     },
     chooseOperation(row) {
+      // this.activeindex = row.index
+      this.rowindexs = row.index
       this.tableAimedData = []
       this.tableAimedData.push(row)
-      this.edit_translation=row.translation
-      this.row=row;
+      this.edit_translation = row.translation
+      this.row = row;
     },
-    handleChange(){
+    selectedstyle({ row, rowIndex }) {
+      console.log(this.stylecolor)
+      if (this.activeindex === rowIndex) {
+        return {
+          "background-color": "red",
+        };
+      }
+
+    },
+    tableRowClassName({ row, rowIndex }) {
+      row.index = rowIndex;
+    },
+    handleChange() {
 
     }
   }
 }
 </script>
+<style>
+.el-table .addBorder {
+  border-right: solid 1px #065b5b !important;
+  border-left: solid 1px #065b5b !important;
+  background: red;
+}
+</style>
 <style scoped>
 .el-aside,
 .el-main {
   overflow: hidden;
-  margin: .5rem;
+  margin: 0.5rem;
   background: rgba(94, 173, 238, 0.3);
 }
 
 .el-footer {
   height: 20rem;
-  margin: .5rem;
+  margin: 0.5rem;
   background: rgba(94, 173, 238, 0.3);
 }
 </style>

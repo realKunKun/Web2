@@ -79,7 +79,7 @@ import Service from './axios.js'
         //get Categorise
         export const getCategorise = (num,page,size) => {
             return Service({
-                url: '/proj' + num+ "/category",
+                url: '/proj/' + num+ "/category",
                 method: 'get',
                 page:page,
                 size:size
