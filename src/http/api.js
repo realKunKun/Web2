@@ -301,7 +301,7 @@ import Service from './axios.js'
         //     "oriText": "string"
         //   }
         // ]
-        export const importTextToFile = (num,data) =>{
+        export const createTextToFile = (num,data) =>{
              return Service({
                  url:'/proj/file/'+num+'/contents',
                  method:'post',

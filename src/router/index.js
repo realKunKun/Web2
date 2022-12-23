@@ -21,8 +21,8 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
   {
-    path: '/translation',
-    name: 'Translation',
+    path: '/TestTranslation',
+    name: 'TestTranslation',
     //meta: {requireAuth: true,  },
     component: () => import('../views/useless/TestTranslation.vue')
   },
@@ -35,8 +35,8 @@ const routes = [
 
   //below are the simple links made by Yutan Wu testings
   {
-    path: '/test',
-    name: 'Test',
+    path: '/translation',
+    name: 'Translation',
     //meta: {requireAuth: true,  },
     component: () => import('../views/Translation.vue')
   },
@@ -82,7 +82,7 @@ router.beforeEach( (to,from,next)=>{
       next('/login') //如果token不存在，就跳到首页
     }
   }else{
-    if(localStorage.getItem("access_token") && to.path == '/login') {  //token存在时候，进去登录页面就自动跳转到首页
+    if(localStorage.getItem("access_token") && to.path === '/login') {  //token存在时候，进去登录页面就自动跳转到首页
       next('/manage')
     }else{
       next()

@@ -20,7 +20,6 @@ Service.interceptors.request.use(
     config=>{
         if(localStorage.getItem("access_token")){
             config.headers.Authorization = localStorage.getItem('access_token');
-            console.log(config.data)
         }
         return config
     },error=>{
@@ -40,10 +39,8 @@ Service.interceptors.response.use(
         if (res.status === 200) {
             switch (res.data.error) {
                 case 0:
-                    Modal.info({
-                        title: 'message',
-                        content: "operation completed successfully",
-                    })
+                    Modal.info({title: 'message', content: "operation completed successfully",})
+                    console.log(res.data)
                     break;
                 case -100:
                     Modal.info({

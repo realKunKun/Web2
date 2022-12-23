@@ -83,7 +83,7 @@ export default {
           login(this.form)
               .then((res) => {
                 localStorage.setItem("access_token", res.data.data);
-                router.push('/test');
+                router.push('/group');
 
 
               })

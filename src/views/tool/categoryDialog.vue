@@ -33,7 +33,7 @@
   <script>
   import {
          reactive, toRefs, watch, ref, h, onMounted, computed } from "vue";
-  import {createNewCategorise} from "@/http/api";
+  import {createFile, createNewCategorise, createTextToFile, updateCategory} from "@/http/api";
   export default {
         
     props: {
@@ -96,11 +96,11 @@
         
             // modify the dialog
             emit("editRow", data.formData);
+            updateCategory(props.rowInfo.projId,{comment:data.formData.CategoryDiscription,id:props.rowInfo.id,name:data.formData.CategoryName,projId:props.rowInfo.projId})
           } else {
             // add a new dialog to the data
             createNewCategorise({comment:data.formData.CategoryDiscription,id:1,name:data.formData.CategoryName,projId:props.rowInfo.projId},props.rowInfo.projId)
-           // data.formData["id"] = props.arrayNum + 1;
-           // emit("addRow", data.formData);
+
           }
         },
       });

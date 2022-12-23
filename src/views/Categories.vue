@@ -1,8 +1,8 @@
 <!--
  * @Author: Yutan Wu
  * @Date: 2022-12-21 21:27
- * @LastEditTime: 2022-12-22 11:29
- * @LastEditors: Yutan Wu
+ * @LastEditTime: 2022-12-23 11:29
+ * @LastEditors: Kunlin Yu
  * @Description: Project main page, the file in this vue is named 'category' but not 'project'
  * @FilePath: \web2\src\view\Categories.vue
 -->
@@ -23,8 +23,9 @@
         <el-menu-item index="/categories"
                       @click="backToProject">Back to GroupPage</el-menu-item>
         <!-- todo -->
-        <el-menu-item index="/categories"
-                      @click="Refresh">Refresh</el-menu-item>
+        <el-menu-item index=""
+                      @click="Refresh"><span style="color:white">Refresh</span></el-menu-item>
+
       </el-menu>
     </el-aside>
     <el-container>
@@ -52,7 +53,7 @@
               <template #default="{ row }">
                 <el-button type="text"
                            size="small"
-                           @click="handleOpen('/Test', row)">Open</el-button>
+                           @click="handleOpen('/translation', row)">Open</el-button>
                 <el-button type="text"
                            size="small"
                            @click="handleDetail(row)">View</el-button>
@@ -86,7 +87,7 @@
 
 <script>
 import {
-  reactive, computed, toRefs, ref, toRaw, getCurrentInstance
+  reactive, computed, toRefs, ref
 } from "vue";
 import {
   ElMessageBox
@@ -95,10 +96,10 @@ import categoryDialog from "./tool/categoryDialog.vue";
 import categoryDetail from "./tool/categoryDetail.vue";
 
 //todo
-import { updateCategory, deleteCategory, getCategorise } from "@/http/api";
+import { deleteCategory, getCategorise, createFile, createTextToFile} from "@/http/api";
 import router from "@/router";
 import { onMounted } from "vue"
-import { useRoute, useRouter } from "vue-router";
+import {  useRouter } from "vue-router";
 
 export default {
 
@@ -169,6 +170,18 @@ export default {
             data.categoryInfo[x].projId=router.currentRoute.value.params.id
           }
           if (data.categoryInfo.length > res.data.data.length) {data.categoryInfo.splice(res.data.data.length, (data.categoryInfo.length - res.data.data.length))}
+            /*
+                      for (let x=1;x<2;x++){
+                        createFile(x,{  comment: "no comment", converter: "Google", filename: "File"}).then((res2)=>{
+                          for (let y=1;y<4;y++) {
+                            createTextToFile(x, {comment: "nothing", marked: false, oriText: "nothing"}).then((res) => {
+
+                            })
+                          }
+                        })
+                        }
+
+             */
         })
       },
       //create a new category
@@ -183,13 +196,10 @@ export default {
         data.categoryDialogShow = true;
       },
       //open the category
-      handleOpen(key) {
+      handleOpen(key,row) {
         //to do
         //push to the key page
-        this.$router.push({
-          path: key,
-          params: { data: 'query' }
-        })
+        router.push(key)
       },
       //show the attributes of the category
       handleDetail(val) {
@@ -222,13 +232,12 @@ export default {
             });
       },
       handleSure(val) {
-
         this.dialogVisible = false;
         const index = data.categoryInfo.findIndex((item) => item.id === val.id);
-        data.categoryInfo.splice(index, 1);
-        deleteCategory(data.projectInfo[index].id).then((res) => {
+        deleteCategory(data.categoryInfo[index].id).then((res) => {
 
         })
+        data.categoryInfo.splice(index, 1);
       },
       // add row
       addRow(val) {

@@ -53,14 +53,14 @@
 
 <script>
 import {
-  reactive, computed, toRefs, ref, toRaw
+  reactive, computed, toRefs, ref
 } from "vue";
 import {
   ElMessageBox
 } from "element-plus";
 import Dialog from "./tool/dialog.vue";
 import Detail from "./tool/detail.vue";
-import {deleteProject, getALlGroups} from "@/http/api";
+import { deleteProject, getALlGroups} from "@/http/api";
 
 
 export default {
@@ -178,7 +178,6 @@ export default {
       handleSure(val) {
         this.dialogVisible = false;
         const index = data.projectInfo.findIndex((item) => item.id === val.id);
-        console.log(data.projectInfo[index].id)
         deleteProject(data.projectInfo[index].id).then((res)=>{
 
         });
