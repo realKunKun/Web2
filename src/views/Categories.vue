@@ -114,6 +114,22 @@ export default {
 
             router.push("/Group")
           },
+          Refresh() {
+            const route = useRoute();
+            console.log(route.params.id)
+            getCategorise(route.params.id, 1,10).then((res) => {
+              for (let x=0;x<res.data.data.length;x++){
+                if (res.data.data.length>data.categoryInfo.length){
+                  data.categoryInfo.push( {id: 0, CategoryName: "", CategoryDiscription: "",})
+                }
+                data.categoryInfo[x].CategoryName=res.data.data[x].name
+                data.categoryInfo[x].CategoryDiscription="the original language is"+res.data.data[x].oriLang
+                data.categoryInfo[x].id=res.data.data[x].id
+              }
+              if (data.categoryInfo.length>res.data.data.length){
+                data.categoryInfo.splice(res.data.data.length,(data.categoryInfo.length-res.data.data.length))
+              }
+            })},
             //create a new category
             handleNew() {
                 data.title = "New Category";
@@ -207,24 +223,6 @@ export default {
             getValue
         };
     },
-  methods:{
-    Refresh() {
-      const route = useRoute();
-      console.log(route.params.id)
-      getCategorise(route.params.id, 1,10).then((res) => {
-        for (let x=0;x<res.data.data.length;x++){
-          if (res.data.data.length>data.categoryInfo.length){
-            data.categoryInfo.push( {id: 0, CategoryName: "", CategoryDiscription: "",})
-          }
-          data.categoryInfo[x].CategoryName=res.data.data[x].name
-          data.categoryInfo[x].CategoryDiscription="the original language is"+res.data.data[x].oriLang
-          data.categoryInfo[x].id=res.data.data[x].id
-        }
-        if (data.categoryInfo.length>res.data.data.length){
-          data.categoryInfo.splice(res.data.data.length,(data.categoryInfo.length-res.data.data.length))
-        }
-      })}
-  }
 };
 </script>
   
