@@ -106,6 +106,7 @@ export default {
   components: {
     categoryDialog, categoryDetail
   },
+  mounted() {this.Refresh()},
   setup() {
     const router = useRouter()
     onMounted(() => {
@@ -124,21 +125,8 @@ export default {
       categoryInfo: [
         {
           id: 1,
-          CategoryName: "Category1",
-          CategoryDiscription: "This is a category discription",
-          projId:0
-        },
-
-        {
-          id: 2,
-          CategoryName: "Category2",
-          CategoryDiscription: "This is another category discription",
-          projId:0
-        },
-        {
-          id: 3,
-          CategoryName: "Category3",
-          CategoryDiscription: "This is also a category discription",
+          CategoryName: "No data",
+          CategoryDiscription: "This is a dummy category",
           projId:0
         },
 

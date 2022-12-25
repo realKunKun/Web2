@@ -68,6 +68,9 @@ export default {
   components: {
     Dialog, Detail
   },
+  mounted() {
+    this.Refresh();
+  },
   setup() {
     const search = ref('')//search content
     let data = reactive({
@@ -83,19 +86,7 @@ export default {
           ProjectName: "Common Project Name",
           ProjectTag: "This is a tag",
           ProjectDiscription: "This is a discription",
-        },
-        {
-          id: 2,
-          ProjectName: "Common Project Name",
-          ProjectTag: "This is another tag",
-          ProjectDiscription: "This is a discription",
-        },
-        {
-          id: 3,
-          ProjectName: "Common Project Name",
-          ProjectTag: "This is also a tag",
-          ProjectDiscription: "This is a discription",
-        },
+        }
 
       ],
     });

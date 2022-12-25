@@ -30,7 +30,7 @@
                     :data="fileData"
                     :key="itemkey">
             <el-table-column prop="fileName"
-                             label="fileName"
+                             
                              width="auto" />
             <el-table-column
                 width="76">
@@ -40,7 +40,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-button @click="leftAddClick" type="primary">+ 新增file</el-button>
+          <el-button @click="leftAddClick" type="primary">+ New File</el-button>
         </el-scrollbar>
       </el-aside>
 
@@ -225,130 +225,19 @@ export default {
       fileData:[
         {
           id: 1,
-          fileName: "File1",
+          fileName: "Dummy",
           fileDiscription: "This is a File discription",
           CateId:0
         },
-        {
-          id: 2,
-          fileName: "File2",
-          fileDiscription: "This is a File discription",
-          CateId:0
-        },
-        {
-          id: 3,
-          fileName: "File2",
-          fileDiscription: "This is a File discription",
-          CateId:0
-        }
       ],
       tableData: [
         {
-          oriText: "I can eat glass, it doesn't hurt me.",
-          translation: '我能吃玻璃而不伤身体。',
-          relation: '[glass]->[玻璃]; Proofread',
+          oriText: "Please select a file from left list.",
+          translation: '请从左侧选择文件。',
+          relation: '',
           id: 1,
           fileId:1,
           marked: true,
-          stage:0,
-          commiter:0,
-          time:""
-        },
-        {
-          oriText: 'Computer science is beautiful.',
-          translation: '计算机科学十分美妙。',
-          relation: '[Computer Science]->[计算机科学]',
-          id: 2,
-          fileId:1,
-          marked: true,
-          stage:0,
-          commiter:0,
-          time:""
-        },
-        {
-          oriText: 'Dummy',
-          translation: '占位',
-          relation: 'Proofread',
-          id: 3,
-          fileId:1,
-          marked: false,
-          stage:0,
-          commiter:0,
-          time:""
-        },
-        {
-          oriText: 'Dummy',
-          translation: '占位',
-          relation: 'Proofread',
-          id: 4,
-          fileId:1,
-          marked: false,
-          stage:0,
-          commiter:0,
-          time:""
-        },
-        {
-          oriText: 'Dummy',
-          translation: '占位',
-          relation: 'Proofread',
-          id: 5,
-          fileId:1,
-          marked: true,
-          stage:0,
-          commiter:0,
-          time:""
-        },
-        {
-          oriText: 'Dummy',
-          translation: '占位',
-          relation: 'Proofread',
-          id: 6,
-          fileId:1,
-          marked: false,
-          stage:0,
-          commiter:0,
-          time:""
-        },
-        {
-          oriText: 'Dummy',
-          translation: '占位',
-          relation: 'Proofread',
-          id: 7,
-          fileId:1,
-          marked: false,
-          stage:0,
-          commiter:0,
-          time:""
-        },
-        {
-          oriText: 'Dummy',
-          translation: '占位',
-          relation: 'Proofread',
-          id: 8,
-          fileId:1,
-          marked: true,
-          stage:0,
-          commiter:0,
-          time:""
-        },
-        {
-          oriText: 'Dummy',
-          translation: '占位',
-          relation: 'Proofread',
-          id: 9,
-          fileId:1,
-          marked: false,
-          stage:0,
-          commiter:0,
-          time:""
-        },
-        {
-          oriText: 'Dummy',
-          translation: '占位',
-          relation: 'Proofread',
-          id: 10,
-          fileId:1,
-          marked: false,
           stage:0,
           commiter:0,
           time:""
@@ -360,6 +249,9 @@ export default {
         },
       ]
     }
+  },
+  mounted() {
+    this.Refresh();
   },
   created: function () {
     this.onload();
@@ -499,24 +391,9 @@ export default {
     myMark() {
       this.activeindex = this.rowindexs
       this.stylecolor = !this.stylecolor
-      /*
-      if (this.row.remark===false){
-
-        mark(this.row.id).then((res)=>{
-            console.log(res.data)
-        })
-      }else{
-        cleanMark(this.row.id).then((res)=>{
-
-        })
-      }
-       */
       if (!this.stylecolor) {
         this.rowindexs = ''
       }
-    },
-    onload() {
-      //this.chooseOperation(this.tableData[0]);
     },
     // 右侧text表格点击一行
     chooseOperation(row) {
@@ -538,9 +415,11 @@ export default {
     },
     // 点击左侧某一行
     FileOperation(row){
-      alert('点击左侧某一行')
+      // alert('点击左侧某一行')
       console.log(row.id)
       this.fileNum=row.id
+
+      this.tableData = [];
 
       getFileContent(row.id+1).then((res)=>{
         for (let i = 0; i <= res.data.data.length; i++) {
