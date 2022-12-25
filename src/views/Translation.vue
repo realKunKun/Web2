@@ -24,7 +24,6 @@
         <el-scrollbar height="80%">
           <el-table class="s-fileTable"
                     ref="FileTableRef"
-                    show-header="false"
                     style="width: 90%"
                     @row-click="FileOperation"
                     :row-class-name="tableRowClassName"
@@ -161,7 +160,7 @@
 
 
 import {
-  cleanMark, createFile,
+  cleanMark, createFile, deleteFile,
   createTextToFile,
   deleteTranlation, getAllFile,
   getFileContent,
@@ -299,15 +298,15 @@ export default {
         if (valid) {
           //alert('add sucess')
          this.dialogFileVisible=false
-          this.fileData.push(
-              {
-                fileName:this.fileForm.name ,
-                fileDiscription: "This is a File discription",
-                CateId:0
-              }
-          )
+          // this.fileData.push(
+          //     {
+          //       name: this.fileForm.name ,
+          //       converter: "manual",
+          //       cateId:0
+          //     }
+          // )
           createFile(router.currentRoute.value.params.id,{comment:"test",converter:"test",filename:this.fileForm.name}).then((res)=>{
-
+            this.Refresh();
           })
         } else {
           console.log('error submit!!');
@@ -352,10 +351,12 @@ export default {
           }
       )
           .then(() => {
-            this.fileData.splice(row.index,1)
-            ElMessage({
-              type: 'success',
-              message: 'Delete completed',
+            deleteFile(row.id).then(() => {
+              ElMessage({
+                type: 'success',
+                message: 'Delete completed',
+              })
+              this.Refresh();
             })
           })
           .catch(() => {
@@ -433,12 +434,15 @@ export default {
     },
     // 点击左侧某一行
     FileOperation(row, col, ev){
+      ElMessage({type: 'info', message: 'Fetching file contents...'})
       // alert('点击左侧某一行')
       console.log(row.id)
       this.fileNum = row.id
+      this.tableData = []
 
       getFileContent(this.fileNum).then((res)=>{
         this.tableData = res.data.data
+        ElMessage({type: 'success', message: 'Successfully fetched file contents.'})
       })
       this.itemkey = Math.random();
     },

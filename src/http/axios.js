@@ -47,8 +47,9 @@ Service.interceptors.response.use(
                 case -100:
                     Modal.info({
                         title: 'message',
-                        content: "not login",
+                        content: "not login or token expired",
                     })
+                    window.localStorage.removeItem('access_token')
                     break;
                 case -101:
                     Modal.info({
@@ -59,7 +60,7 @@ Service.interceptors.response.use(
                 case -102:
                     Modal.info({
                         title: 'message',
-                        content: "login error",
+                        content: "login error: " + res.data.desc,
                     })
                     break;
                 case -103:

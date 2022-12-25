@@ -30,12 +30,12 @@
           >Remember pass</el-checkbox
           >
         </div>
-        <div>
+        <!-- <div>
           <span class="shou" @click="forgetpas">Forget Password？</span>
-        </div>
+        </div> -->
       </div>
       <div class="butt">
-        <el-button type="primary" @click.native.prevent="login('form')">Login In</el-button>
+        <el-button type="primary" @click.native.prevent="login('form')">Log In</el-button>
         <el-button class="shou" @click="register">Register</el-button>
       </div>
     </div>
@@ -44,8 +44,9 @@
 
 <script>
 
-import { login } from "@/http/api";
+import { login, register } from "@/http/api";
 import router from "@/router";
+import { ElMessage } from "element-plus";
 import { layer } from "vue3-layer";
 
 export default {
@@ -59,17 +60,21 @@ export default {
       checked: false,
       rules: {
         username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          { max: 10, message: "不能大于10个字符", trigger: "blur" },
+          { required: true, message: "Please enter username.", trigger: "blur" },
+          { max: 10, message: "Cannot exceed 10 characters.", trigger: "blur" },
         ],
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { max: 10, message: "不能大于10个字符", trigger: "blur" },
+          { required: true, message: "Please enter password.", trigger: "blur" },
+          { max: 10, message: "Cannot exceed 10 characters.", trigger: "blur" },
         ],
       },
     };
   },
   mounted() {
+    if(localStorage.getItem("access_token")) {
+      ElMessage({type: 'info', message: 'Already logged in.'})
+      router.push('/group')
+    }
     if(localStorage.getItem("news")){
       this.form=JSON.parse(localStorage.getItem("news"))
       this.checked=true
@@ -84,8 +89,6 @@ export default {
               .then((res) => {
                 localStorage.setItem("access_token", res.data.data);
                 router.push('/group');
-
-
               })
         } else {
           return false;
@@ -109,8 +112,9 @@ export default {
       })
     },
     register() {
-      layer.msg("听君一席话");
-
+      register(this.form).then((res) => {
+        ElMessage({type: 'success', message: 'Register successfully, please log in'})
+      })
     },
   },
 };
@@ -123,11 +127,12 @@ export default {
   width: 100%;
   height: 100%;
   min-width: 1000px;
-  background-image: url("../assets/login2.jpg");
+  /* background-image: url("../assets/login2.jpg");
   background-size: 100% 100%;
   background-position: center center;
+  background-repeat: no-repeat; */
+  background: linear-gradient(to bottom, rgb(235, 255, 255), rgb(172, 222, 222));
   overflow: auto;
-  background-repeat: no-repeat;
   position: fixed;
   line-height: 100%;
   padding-top: 150px;
