@@ -41,7 +41,7 @@ Service.interceptors.response.use(
         if (res.status === 200) {
             switch (res.data.error) {
                 case 0:
-                    Modal.info({title: 'message', content: "operation completed successfully",})
+                    // Modal.info({title: 'message', content: "operation completed successfully",})
                     console.log(res.data)
                     break;
                 case -100:
