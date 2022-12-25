@@ -170,18 +170,6 @@ export default {
             data.categoryInfo[x].projId=router.currentRoute.value.params.id
           }
           if (data.categoryInfo.length > res.data.data.length) {data.categoryInfo.splice(res.data.data.length, (data.categoryInfo.length - res.data.data.length))}
-            /*
-                      for (let x=1;x<2;x++){
-                        createFile(x,{  comment: "no comment", converter: "Google", filename: "File"}).then((res2)=>{
-                          for (let y=1;y<4;y++) {
-                            createTextToFile(x, {comment: "nothing", marked: false, oriText: "nothing"}).then((res) => {
-
-                            })
-                          }
-                        })
-                        }
-
-             */
         })
       },
       //create a new category
@@ -199,7 +187,13 @@ export default {
       handleOpen(key,row) {
         //to do
         //push to the key page
-        router.push(key)
+        this.$router.push({
+          name: "Translation",
+          params: {
+            id: row.id
+          }
+        })
+
       },
       //show the attributes of the category
       handleDetail(val) {

@@ -1,8 +1,8 @@
 <!--
  * @Author: Yutan Wu
  * @Date: 2022-11-23 12:38:25
- * @LastEditTime: 2022-11-23 12:38:25
- * @LastEditors: Yutan Wu
+ * @LastEditTime: 2022-11-25 12:38:25
+ * @LastEditors: Kunlin Yu
  * @Description: Test the translation page, it is a copy of translation.vue with UI decoration
  * @FilePath: \vue3-element-admin\src\view\Translation.vue
 -->
@@ -27,7 +27,8 @@
                     style="width: 90%"
                     @row-click="FileOperation(row, column, event)"
                     :row-class-name="tableRowClassName"
-                    :data="fileData">
+                    :data="fileData"
+                    :key="itemkey">
             <el-table-column prop="fileName"
                              label="fileName"
                              width="auto" />
@@ -48,7 +49,7 @@
         <el-main style="height: 20rem;">The Translating Table
           <el-scrollbar height="90%">
             <!-- chooseOperation let you display choosed row info in the footer table -->
-            <el-table :key="keyNum"
+            <el-table :key="itemkey"
                       ref="MainTableRef"
                       :data="tableData"
                       :row-key="(row) => row.id"
@@ -57,8 +58,8 @@
                       @row-click="chooseOperation"
                       :row-class-name="tableRowClassName"
                       :row-style="selectedstyle">
-              <el-table-column prop="origin"
-                               label="origin"
+              <el-table-column prop="oriText"
+                               label="oriText"
                                width="auto" />
               <el-table-column style="myMark()"
                                prop="translation"
@@ -86,7 +87,7 @@
                     :data="tableAimedData"
                     style="width: 100%"
                     @current-change="handleCurrentChange">
-            <el-table-column prop="origin"
+            <el-table-column prop="oriText"
                              width="auto" />
             <el-table-column prop="translation"
                              width="auto" />
@@ -134,8 +135,8 @@
 
     <el-dialog v-model="dialogTextVisible" title="add Text">
       <el-form :rules="Textrules"  ref="ruleFormText" :model="textForm"  label-width="120px">
-        <el-form-item label="Text origin" prop="origin">
-          <el-input v-model="textForm.origin"/>
+        <el-form-item label="Text oriText" prop="oriText">
+          <el-input v-model="textForm.oriText"/>
         </el-form-item>
         <el-form-item label="Text translation" prop="translation">
           <el-input  v-model="textForm.translation" />
@@ -158,28 +159,30 @@
 
 
 import {
-  cleanMark,
+  cleanMark, createFile,
   createTextToFile,
-  deleteTranlation,
+  deleteTranlation, getAllFile,
   getFileContent,
   getTranslation,
   mark,
   updateTranslation
 } from "@/http/api";
 import { ElMessage, ElMessageBox } from 'element-plus'
+import {useRouter} from "vue-router";
+import router from "@/router";
 
 export default {
 
   data() {
     return {
       textForm:{
-        origin:'',
+        oriText:'',
         translation:'',
         relation:''
       },
       Textrules:{
-        origin: [
-          { required: true, message: 'Please input origin', trigger: 'blur' }
+        oriText: [
+          { required: true, message: 'Please input oriText', trigger: 'blur' }
         ],
         translation: [
           { required: true, message: 'Please input file translation', trigger: 'blur' }
@@ -202,15 +205,19 @@ export default {
       activeindex: null,
       stylecolor: false,
       keyNum: 0,
+      itemkey: '',
       rowIndex: 0,
       fileNum:0,
       rowindexs: '',
       row: {
-        origin: '',
+        oriText: '',
         translation: '',
         relation: '',
         id: 0,
-        remark: true
+        remark: true,
+        stage:0,
+        commiter:0,
+        time:""
       },
       //update the structure of id(num), and remark(boolean) by Kunlin Yu 2022/12/21
       //my data by Yutan Wu, why you do not use list? arr is hard to read.
@@ -237,84 +244,114 @@ export default {
       ],
       tableData: [
         {
-          origin: "I can eat glass, it doesn't hurt me.",
+          oriText: "I can eat glass, it doesn't hurt me.",
           translation: '我能吃玻璃而不伤身体。',
           relation: '[glass]->[玻璃]; Proofread',
           id: 1,
-          file:1,
-          remark: true
+          fileId:1,
+          marked: true,
+          stage:0,
+          commiter:0,
+          time:""
         },
         {
-          origin: 'Computer science is beautiful.',
+          oriText: 'Computer science is beautiful.',
           translation: '计算机科学十分美妙。',
           relation: '[Computer Science]->[计算机科学]',
           id: 2,
-          file:1,
-          remark: true
+          fileId:1,
+          marked: true,
+          stage:0,
+          commiter:0,
+          time:""
         },
         {
-          origin: 'Dummy',
+          oriText: 'Dummy',
           translation: '占位',
           relation: 'Proofread',
           id: 3,
-          file:1,
-          remark: false
+          fileId:1,
+          marked: false,
+          stage:0,
+          commiter:0,
+          time:""
         },
         {
-          origin: 'Dummy',
+          oriText: 'Dummy',
           translation: '占位',
           relation: 'Proofread',
           id: 4,
-          file:1,
-          remark: false
+          fileId:1,
+          marked: false,
+          stage:0,
+          commiter:0,
+          time:""
         },
         {
-          origin: 'Dummy',
+          oriText: 'Dummy',
           translation: '占位',
           relation: 'Proofread',
           id: 5,
-          file:1,
-          remark: true
+          fileId:1,
+          marked: true,
+          stage:0,
+          commiter:0,
+          time:""
         },
         {
-          origin: 'Dummy',
+          oriText: 'Dummy',
           translation: '占位',
           relation: 'Proofread',
           id: 6,
-          file:1,
-          remark: false
+          fileId:1,
+          marked: false,
+          stage:0,
+          commiter:0,
+          time:""
         },
         {
-          origin: 'Dummy',
+          oriText: 'Dummy',
           translation: '占位',
           relation: 'Proofread',
           id: 7,
-          file:1,
-          remark: false
+          fileId:1,
+          marked: false,
+          stage:0,
+          commiter:0,
+          time:""
         },
         {
-          origin: 'Dummy',
+          oriText: 'Dummy',
           translation: '占位',
           relation: 'Proofread',
           id: 8,
-          file:1,
-          remark: true
+          fileId:1,
+          marked: true,
+          stage:0,
+          commiter:0,
+          time:""
         },
         {
-          origin: 'Dummy',
+          oriText: 'Dummy',
           translation: '占位',
           relation: 'Proofread',
           id: 9,
-          file:1,
-          remark: false
+          fileId:1,
+          marked: false,
+          stage:0,
+          commiter:0,
+          time:""
         },
         {
-          origin: 'Dummy',
+          oriText: 'Dummy',
           translation: '占位',
           relation: 'Proofread',
           id: 10,
-          file:1,
-          remark: false
+          fileId:1,
+          marked: false,
+          stage:0,
+          commiter:0,
+          time:""
         },
       ]
       ,
@@ -332,20 +369,22 @@ export default {
     leftAddClick(){
       this.dialogFileVisible=true;
       this.fileForm.name=''
+
     },
     // 确定新增text
     onSubmitText(formName){
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('add sucess')
+          //alert('add sucess')
           this.dialogTextVisible=false
           this.tableData.push({
-            origin: this.textForm.origin,
+            oriText: this.textForm.oriText,
             translation: this.textForm.translation,
             relation: this.textForm.relation
-          }
+          })
+          createTextToFile(this.fileNum+1,[{comment:this.textForm.relation,marked:false,oriText:this.textForm.oriText}]).then((res)=>{
 
-          )
+          })
         } else {
           console.log('error submit!!');
           return false;
@@ -354,7 +393,7 @@ export default {
 },
     myAdd(){
      this.textForm={
-       origin:'',
+       oriText:'',
        translation:'',
        relation:''
      }
@@ -364,7 +403,7 @@ export default {
     onSubmitFile(formName){
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('add sucess')
+          //alert('add sucess')
          this.dialogFileVisible=false
           this.fileData.push(
               {
@@ -373,6 +412,9 @@ export default {
                 CateId:0
               }
           )
+          createFile(router.currentRoute.value.params.id,{comment:"test",converter:"test",filename:this.fileForm.name}).then((res)=>{
+
+          })
         } else {
           console.log('error submit!!');
           return false;
@@ -431,15 +473,16 @@ export default {
     },
     handleCurrentChange() { },
     Refresh() {
-      //should use fileId instead of 1 in two parts
-        getFileContent(1).then((res)=>{//here
-          for (let i = 0; i <= 1; i++) {
-                this.tableData[i].id = res.data.data[i].id,
-                this.tableData[i].origin = res.data.data[i].oriText,
-                this.tableData[i].remark = res.data.data[i].marked,
-                this.tableData[i].file = 1//here
+      getAllFile(router.currentRoute.value.params.id).then((res)=>{
+        for (let x = 0; x < res.data.data.length; x++) {
+          if (res.data.data.length > this.fileData.length) {
+            this.fileData.push(   {id: 1, fileName: "File1", fileDiscription: "This is a File discription", CateId:0})
           }
-        })
+          this.fileData[x].fileName=res.data.data[x].name
+        }
+        this.itemkey = Math.random();
+        if (this.fileData.length > res.data.data.length) {this.fileData.splice(res.data.data.length, (this.fileData.length - res.data.data.length))}
+      })
     },
     myRemove() {
       this.edit_translation = '';
@@ -448,15 +491,17 @@ export default {
       })
     },
     mySave() {
-      this.keyNum++;
+      this.itemkey = Math.random();
       this.tableData[this.tableData.indexOf(this.row)].translation = this.edit_translation;
-      updateTranslation(this.row.translation, this.row).then((res) => {
-        console.log(res.data.desc)
+      updateTranslation(this.row.translation, this.row.id).then((res) => {
+
       })},
     myMark() {
       this.activeindex = this.rowindexs
       this.stylecolor = !this.stylecolor
-      if (this.row.remark===false){//这里的row是点击后获取到的那一行数据对吧？
+      /*
+      if (this.row.remark===false){
+
         mark(this.row.id).then((res)=>{
             console.log(res.data)
         })
@@ -465,6 +510,7 @@ export default {
 
         })
       }
+       */
       if (!this.stylecolor) {
         this.rowindexs = ''
       }
@@ -495,6 +541,25 @@ export default {
       alert('点击左侧某一行')
       console.log(row.id)
       this.fileNum=row.id
+
+      getFileContent(row.id+1).then((res)=>{
+        for (let i = 0; i <= res.data.data.length; i++) {
+          if (res.data.data.length > this.tableData.length)
+          {this.tableData.push({oriText: 'Dummy', translation: '占位', relation: 'Proofread', id: 0, fileId:1, marked: false, stage:0, commiter:0, time:""})}
+              this.tableData[i].id = res.data.data[i].id
+              this.tableData[i].oriText = res.data.data[i].oriText
+              this.tableData[i].marked = res.data.data[i].marked
+              this.tableData[i].fileId = res.data.data[i].fileId
+              this.tableData[i].translation=res.data.data[i].translation
+              this.tableData[i].stage=res.data.data[i].stage
+              this.tableData[i].commiter=res.data.data[i].commiter
+              this.tableData[i].time=res.data.data[i].time
+
+        }
+
+          if (this.tableData.length > res.data.data.length) {this.tableData.splice(res.data.data.length, (10 - res.data.data.length))}
+      })
+      this.itemkey = Math.random();
     },
     tableRowClassName({ row, rowIndex }) {
       row.index = rowIndex;

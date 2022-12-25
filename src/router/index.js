@@ -35,7 +35,7 @@ const routes = [
 
   //below are the simple links made by Yutan Wu testings
   {
-    path: '/translation',
+    path: '/translation/:id',
     name: 'Translation',
     //meta: {requireAuth: true,  },
     component: () => import('../views/Translation.vue')
