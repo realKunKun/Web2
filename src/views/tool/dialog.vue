@@ -22,8 +22,11 @@
         <el-form-item label="Project Tag: " prop="ProjectTag">
           <el-input v-model="formData.ProjectTag"></el-input>
         </el-form-item>
-        <el-form-item label="Project Discription: " prop="ProjectDiscription">
-          <el-input type="textarea" :autosize="{minRows:8}" v-model="formData.ProjectDiscription"></el-input>
+        <el-form-item label="Original Language: " prop="originalLanguage">
+          <el-input v-model="formData.originalLanguage"></el-input>
+        </el-form-item>
+        <el-form-item label="Target Language: " prop="targetLanguage">
+          <el-input v-model="formData.targetLanguage"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm()">Confirm</el-button>
@@ -76,7 +79,8 @@
         formData: {
            ProjectName : "",
            ProjectTag : "" ,
-           ProjectDiscription : ""
+           originalLanguage : "en-US",
+           targetLanguage : "zh-CN"
         },
       });
       const method = reactive({
@@ -99,17 +103,19 @@
           if (props.rowInfo.id || props.rowInfo.ProjectName || props.rowInfo.ProjectTag || props.rowInfo.ProjectDiscription) {
         
             // modify the dialog
-            emit("editRow", data.formData);
-            updateProject(props.rowInfo.id,{id:props.rowInfo.id,name: data.formData.ProjectName,oriLang:"English",owner:0,tags:data.formData.ProjectTag,tarLang : "Chinese", type:0})
+            // emit("editRow", data.formData);
+            updateProject(props.rowInfo.id,{id:props.rowInfo.id,name: data.formData.ProjectName, oriLang:data.formData.originalLanguage,owner:0,tags:data.formData.ProjectTag,tarLang:data.formData.targetLanguage, type:0})
           } else {
             // add a new dialog to the data
            // data.formData["id"] = props.arrayNum + 1;
            // emit("addRow", data.formData);
-            createNewProject({id:1,name: data.formData.ProjectName,oriLang:"English",owner:0,tags:data.formData.ProjectTag,tarLang : "Chinese", type:0}).
+            createNewProject({id:1,name: data.formData.ProjectName,oriLang:data.formData.originalLanguage,owner:0,tags:data.formData.ProjectTag,tarLang:data.formData.targetLanguage, type:0}).
             then((res) =>{
+              console.log(res);
               if (res.data.error===0){
               }})
           }
+          emit('close', data.formData);
 
 
         },

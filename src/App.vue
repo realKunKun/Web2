@@ -17,7 +17,7 @@
       <el-menu-item index="/">Log In/Sign In</el-menu-item>
       <el-menu-item index="/group">Group</el-menu-item>
       <el-menu-item index="/about_us">About Us</el-menu-item>
-      <el-menu-item index="/help">Help</el-menu-item>
+      <el-menu-item index="_logout">Logout</el-menu-item>
     </el-menu>
   </div>
   <div id="nav-placeholder"></div>
@@ -27,11 +27,21 @@
 <script setup>//UI decoration setups
 import { ref } from 'vue'
 import router from "@/router";
+import { ElMessage } from 'element-plus';
 const activeIndex = ref('2')//default initial location is sign in/log in
 function handleSelect(key) {
+  if (key === '_logout') {
+    logout();
+    return;
+  }
   router.push({
     path: key
   })
+}
+function logout() {
+  window.localStorage.removeItem('access_token')
+  ElMessage({type: 'info', message: 'Logged out.'})
+  router.push('/')
 }
 </script>
 

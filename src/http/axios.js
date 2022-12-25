@@ -103,6 +103,7 @@ Service.interceptors.response.use(
                 message.error('Created')
                 break
             case 401:
+                window.localStorage.removeItem('access_token')
                 message.error('Unauthorized')
                 break
             case 403:

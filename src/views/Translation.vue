@@ -434,7 +434,6 @@ export default {
     },
     // 点击左侧某一行
     FileOperation(row, col, ev){
-      ElMessage({type: 'info', message: 'Fetching file contents...'})
       // alert('点击左侧某一行')
       console.log(row.id)
       this.fileNum = row.id

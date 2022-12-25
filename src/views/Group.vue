@@ -25,14 +25,15 @@
           <el-button class="new_btn" type="primary" @click="handleNew">Add New</el-button>
           <!-- initial data: projectInfo -> seacr filter data: filteredSearch -->
           <el-table :data="filteredSearch" border style="width: 100%">
-            <el-table-column prop="ProjectName" label="Project Name" />
-            <el-table-column prop="ProjectTag" label="Project Tag" />
-            <el-table-column prop="ProjectDiscription" label="Project Discription" />
+            <el-table-column prop="name" label="Project Name" />
+            <el-table-column prop="tags" label="Project Tag" />
+            <el-table-column prop="oriLang" label="Source Language" />
+            <el-table-column prop="tarLang" label="Target Language" />
             <el-table-column fixed="right" label="Operations">
               <template #default="{ row }">
                 <!-- 'project' is the path to Categories.vue, row is the project row index -->
                 <el-button type="text" size="small" @click="handleOpen('/categories', row)">Open</el-button>
-                <el-button type="text" size="small" @click="handleDetail(row)">View</el-button>
+                <!-- <el-button type="text" size="small" @click="handleDetail(row)">View</el-button> -->
                 <el-button type="text" size="small" @click="handleEdit(row)">Edit</el-button>
                 <el-button type="text" size="small" @click="handleDel(row)">Delete</el-button>
               </template>
@@ -40,7 +41,7 @@
           </el-table>
           <!-- add or edit a dialog -->
           <Dialog v-if="dialogShow" v-model:dialogShow="dialogShow" :rowInfo="rowInfo" :title="title"
-                  :arrayNum="projectInfo.length" @addRow="addRow" @editRow="editRow" />
+                  :arrayNum="projectInfo.length" @close="Refresh" />
           <!-- detail of the dialog -->
           <Detail v-if="detailShow" :rowInfo="rowInfo" @closeDetail="closeDetail" />
         </div>
@@ -81,13 +82,6 @@ export default {
       }, // new or edit
       title: "", // new or modify
       projectInfo: [
-        {
-          id: 1,
-          ProjectName: "Common Project Name",
-          ProjectTag: "This is a tag",
-          ProjectDiscription: "This is a discription",
-        }
-
       ],
     });
 
@@ -103,18 +97,7 @@ export default {
       //
       Refresh() {
         getALlGroups(1, 10).then((res) => {
-          for (let x=0;x<res.data.data.length;x++){
-            if (res.data.data.length>data.projectInfo.length){
-              data.projectInfo.push( {id: 3, ProjectName: "", ProjectTag: "", ProjectDiscription: "",})
-            }
-            data.projectInfo[x].ProjectName=res.data.data[x].name
-            data.projectInfo[x].ProjectTag=res.data.data[x].tags
-            data.projectInfo[x].ProjectDiscription="the original language is"+res.data.data[x].oriLang
-            data.projectInfo[x].id=res.data.data[x].id
-          }
-            if (data.projectInfo.length>res.data.data.length){
-              data.projectInfo.splice(res.data.data.length,(data.projectInfo.length-res.data.data.length))
-            }
+          data.projectInfo = res.data.data
         })
       },
       //create a new project
@@ -151,7 +134,7 @@ export default {
       //delete the project
       handleDel(val) {
 
-        ElMessageBox.confirm("Are you sure to delete this information?", "Hint", {
+        ElMessageBox.confirm("Are you sure to delete this project?", "Hint", {
 
           confirmButtonText: "Confirm",
           cancelButtonText: "Cancel",
@@ -177,7 +160,7 @@ export default {
       },
       // add row
       addRow(val) {
-
+        console.log('test');
         data.projectInfo.push(val);
       },
       // edit row
