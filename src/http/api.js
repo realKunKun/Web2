@@ -277,6 +277,12 @@ import Service from './axios.js'
                    data
                })
         }
+        export const deleteFile = (num) =>{
+            return Service({
+                url: '/proj/file/' + num,
+                method: 'delete'
+            })
+        }
         //Update File Comment
         //string
         export const updateFileCommemnt = (num,data) =>{

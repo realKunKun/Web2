@@ -15,7 +15,7 @@
         <n-upload action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
                   :headers="{ 'naive-info': 'hello!' }"
                   :data="{ 'naive-data': 'cool! naive!' }">
-          <n-button>Upload File</n-button>
+          <!-- <n-button>Upload File</n-button> -->
         </n-upload>
         <el-menu :default-active="activeIndex" style="color:dodgerblue;">
         <el-menu-item index=""
@@ -24,12 +24,14 @@
         <el-scrollbar height="80%">
           <el-table class="s-fileTable"
                     ref="FileTableRef"
+                    show-header="false"
                     style="width: 90%"
-                    @row-click="FileOperation(row, column, event)"
+                    @row-click="FileOperation"
                     :row-class-name="tableRowClassName"
                     :data="fileData"
+                    :row-key="selectedFileIdx"
                     :key="itemkey">
-            <el-table-column prop="fileName"
+            <el-table-column prop="name"
                              
                              width="auto" />
             <el-table-column
@@ -201,6 +203,7 @@ export default {
       fileForm:{
         name:''
       },
+      selectedFileIdx: 0,
       dialogFileVisible:false,
       activeindex: null,
       stylecolor: false,
@@ -261,7 +264,6 @@ export default {
     leftAddClick(){
       this.dialogFileVisible=true;
       this.fileForm.name=''
-
     },
     // 确定新增text
     onSubmitText(formName){
@@ -274,7 +276,7 @@ export default {
             translation: this.textForm.translation,
             relation: this.textForm.relation
           })
-          createTextToFile(this.fileNum+1,[{comment:this.textForm.relation,marked:false,oriText:this.textForm.oriText}]).then((res)=>{
+          createTextToFile(this.fileNum,[{comment:this.textForm.relation,marked:false,oriText:this.textForm.oriText}]).then((res)=>{
 
           })
         } else {
@@ -365,12 +367,13 @@ export default {
     },
     handleCurrentChange() { },
     Refresh() {
+      this.fileData = [];
+
       getAllFile(router.currentRoute.value.params.id).then((res)=>{
-        for (let x = 0; x < res.data.data.length; x++) {
+        for (const element of res.data.data) {
           if (res.data.data.length > this.fileData.length) {
-            this.fileData.push(   {id: 1, fileName: "File1", fileDiscription: "This is a File discription", CateId:0})
+            this.fileData.push(element)
           }
-          this.fileData[x].fileName=res.data.data[x].name
         }
         this.itemkey = Math.random();
         if (this.fileData.length > res.data.data.length) {this.fileData.splice(res.data.data.length, (this.fileData.length - res.data.data.length))}
@@ -391,9 +394,24 @@ export default {
     myMark() {
       this.activeindex = this.rowindexs
       this.stylecolor = !this.stylecolor
+      /*
+      if (this.row.remark===false){
+
+        mark(this.row.id).then((res)=>{
+            console.log(res.data)
+        })
+      }else{
+        cleanMark(this.row.id).then((res)=>{
+
+        })
+      }
+       */
       if (!this.stylecolor) {
         this.rowindexs = ''
       }
+    },
+    onload() {
+      //this.chooseOperation(this.tableData[0]);
     },
     // 右侧text表格点击一行
     chooseOperation(row) {
@@ -414,29 +432,13 @@ export default {
       }
     },
     // 点击左侧某一行
-    FileOperation(row){
+    FileOperation(row, col, ev){
       // alert('点击左侧某一行')
       console.log(row.id)
-      this.fileNum=row.id
+      this.fileNum = row.id
 
-      this.tableData = [];
-
-      getFileContent(row.id+1).then((res)=>{
-        for (let i = 0; i <= res.data.data.length; i++) {
-          if (res.data.data.length > this.tableData.length)
-          {this.tableData.push({oriText: 'Dummy', translation: '占位', relation: 'Proofread', id: 0, fileId:1, marked: false, stage:0, commiter:0, time:""})}
-              this.tableData[i].id = res.data.data[i].id
-              this.tableData[i].oriText = res.data.data[i].oriText
-              this.tableData[i].marked = res.data.data[i].marked
-              this.tableData[i].fileId = res.data.data[i].fileId
-              this.tableData[i].translation=res.data.data[i].translation
-              this.tableData[i].stage=res.data.data[i].stage
-              this.tableData[i].commiter=res.data.data[i].commiter
-              this.tableData[i].time=res.data.data[i].time
-
-        }
-
-          if (this.tableData.length > res.data.data.length) {this.tableData.splice(res.data.data.length, (10 - res.data.data.length))}
+      getFileContent(this.fileNum).then((res)=>{
+        this.tableData = res.data.data
       })
       this.itemkey = Math.random();
     },
