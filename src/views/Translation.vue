@@ -66,8 +66,8 @@
                                prop="translation"
                                label="translation"
                                width="auto" />
-              <el-table-column prop="relation"
-                               label="relation"
+              <el-table-column prop="marked"
+                               label="marked"
                                width="auto" />
               <el-table-column
                   width="76">
@@ -395,18 +395,18 @@ export default {
     myMark() {
       this.activeindex = this.rowindexs
       this.stylecolor = !this.stylecolor
-      /*
-      if (this.row.remark===false){
 
+      if (this.row.marked===false){
+
+          this.row.marked = true;
         mark(this.row.id).then((res)=>{
-            console.log(res.data)
-        })
+        }).catch(()=>{this.row.marked = false})
       }else{
-        cleanMark(this.row.id).then((res)=>{
-
-        })
+          this.row.marked = false
+          cleanMark(this.row.id).then((res)=>{
+        }).catch(()=>{this.row.marked = true})
       }
-       */
+
       if (!this.stylecolor) {
         this.rowindexs = ''
       }
@@ -426,9 +426,9 @@ export default {
     },
     selectedstyle({ row, rowIndex }) {
       console.log(this.stylecolor)
-      if (row.remark===true) {
+      if (row.marked===true) {
         return {
-          "background-color": "red",
+          "background-color": "rgb(240,160,160)",
         };
       }
     },
