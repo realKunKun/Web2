@@ -180,10 +180,10 @@ import Service from './axios.js'
             })
         }
         //Clean an exisiting translation by its id.
-        export const deleteTranlation = (num) => {
+        export const deleteTranlation = (num) =>{
              return Service({
                  url:'/trans/trans/'+num,
-                 method:'get'
+                 method:'delete'
              })
         }
         //Get translations (translating chronicle information) of given original text id.
