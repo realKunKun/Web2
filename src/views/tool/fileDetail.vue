@@ -9,10 +9,13 @@
 <template>
   <el-dialog :model-value="true" title="View" @close="handleClose">
     <p>
-      <label for="FileName">Category Name: </label>
-      <span id="FileName"> {{ fileInfo.fileName }} </span>
+      <label for="Account">Category Name: </label>
+      <span id="Account"> {{ fileInfo.fileName }} </span>
     </p>
-
+    <p>
+      <label for="Password">Category Discription: </label>
+      <span id="Password"> {{ fileInfo.Password }} </span>
+    </p>
     <p>
       <label for="fileDiscription">Category Discription: </label>
       <span id="fileDiscription"> {{ fileInfo.fileDiscription }} </span>

@@ -32,8 +32,6 @@ const routes = [
     //meta: {requireAuth: true,},
     component: () => import('../views/useless/Manage')
   },
-
-  //below are the simple links made by Yutan Wu testings
   {
     path: '/translation/:id',
     name: 'Translation',

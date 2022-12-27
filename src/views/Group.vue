@@ -1,8 +1,8 @@
 <!--
  * @Author: Yutan Wu
  * @Date: 2022-12-18 14:36
- * @LastEditTime: 2022-12-22 11:29
- * @LastEditors: Yutan Wu
+ * @LastEditTime: 2022-12-25 11:29
+ * @LastEditors: FanXuYouYang
  * @Description: Group main page
  * @FilePath: \web2\src\view\Group.vue
 -->

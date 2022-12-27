@@ -43,14 +43,13 @@
 import { login, register } from "@/http/api";
 import router from "@/router";
 import { ElMessage } from "element-plus";
-import { layer } from "vue3-layer";
 import fileDialog from "./tool/fileDialog.vue";
-import fileDetail from "./tool/fileDetail.vue";
+
 
 export default {
   name: "login",
   components: {
-    fileDialog, fileDetail
+    fileDialog
   },
   data() {
     return {
@@ -129,14 +128,18 @@ export default {
       })
     },
     register() {
+      /*
       this.title = "Register";
       this.rowInfo = {
         };
       this.dialogShow = true;
 
+       */
+
       register(this.form).then((res) => {
         ElMessage({ type: 'success', message: 'Register successfully, please log in' })
       })
+
     },
   },
 };

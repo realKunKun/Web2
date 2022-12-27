@@ -7,18 +7,33 @@
  * @FilePath: \vue3-element-admin\src\tool\fileDetail.vue
 -->
 <template>
-  <el-dialog :model-value="true" :title="title" @close="handleClose">
-    <el-form ref="ruleFormRef" :model="formData" :rules="rules" label-width="25%" class="demo-ruleForm"
-      :size="formSize">
-      <el-form-item label="User Account: " prop="Account">
-        <el-input v-model="formData.Account" placeholder="Please input account" clearable></el-input>
+  <el-dialog :model-value="true"
+             :title="title"
+             @close="handleClose">
+    <el-form ref="ruleFormRef"
+             :model="formData"
+             :rules="rules"
+             label-width="25%"
+             class="demo-ruleForm"
+             :size="formSize">
+      <el-form-item label="User Account: "
+                    prop="Account">
+        <el-input v-model="formData.Account"
+                  placeholder="Please input account"
+                  clearable></el-input>
       </el-form-item>
-      <el-form-item label="User Password: " prop="Password">
-        <el-input v-model="formData.Password" type="password" placeholder="Please input password"
-          show-password></el-input>
+      <el-form-item label="User Password: "
+                    prop="Password">
+        <el-input v-model="formData.Password"
+                  placeholder="Please input password"
+                  type="password"
+                  show-password></el-input>
       </el-form-item>
-      <el-form-item label="User Email: " prop="email">
-        <el-input v-model="formData.email" placeholder="Please input email" clearable></el-input>
+      <el-form-item label="User Email: "
+                    prop="email">
+        <el-input v-model="formData.email"
+                  placeholder="Please input email"
+                  clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm()">Confirm</el-button>
@@ -32,7 +47,7 @@
 import {
   reactive, toRefs, onMounted
 } from "vue";
-import { } from "@/http/api";
+import {  register } from "@/http/api";
 export default {
 
   props: {
@@ -104,6 +119,11 @@ export default {
           // data.formData["id"] = props.arrayNum + 1;
           // emit("addRow", data.formData);
           //createFile()
+          register({email:data.formData.email, password:data.formData.Password, username:data.formData.Account}).then((res)=>{
+
+          })
+          emit('close', data.formData);
+
         }
 
 

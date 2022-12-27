@@ -18,9 +18,10 @@ const Service = axios.create({
 // axios 请求拦截器
 Service.interceptors.request.use(
     config=>{
+        //console.log(config.data)
         if(localStorage.getItem("access_token")){
             config.headers.Authorization = localStorage.getItem('access_token');
-            console.log(config.data)
+
         }
         return config
     },error=>{
@@ -37,7 +38,7 @@ Service.interceptors.request.use(
 // axios respone拦截器
 Service.interceptors.response.use(
     res=> {
-        console.log(res.data)
+        //console.log(res.data)
         if (res.status === 200) {
             switch (res.data.error) {
                 case 0:
