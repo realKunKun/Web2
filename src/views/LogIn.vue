@@ -8,27 +8,16 @@
       <div class="formdata">
         <el-form ref="form" :model="form" :rules="rules">
           <el-form-item prop="username">
-            <el-input
-                v-model="form.username"
-                clearable
-                placeholder="enter account"
-            ></el-input>
+            <el-input v-model="form.username" clearable placeholder="enter account"></el-input>
           </el-form-item>
           <el-form-item prop="password">
-            <el-input
-                v-model="form.password"
-                clearable
-                placeholder="enter password"
-                show-password
-            ></el-input>
+            <el-input v-model="form.password" clearable placeholder="enter password" show-password></el-input>
           </el-form-item>
         </el-form>
       </div>
       <div class="tool">
         <div>
-          <el-checkbox v-model="checked" @change="remenber"
-          >Remember pass</el-checkbox
-          >
+          <el-checkbox v-model="checked" @change="remenber">Remember pass</el-checkbox>
         </div>
         <!-- <div>
           <span class="shou" @click="forgetpas">Forget Password？</span>
@@ -38,7 +27,14 @@
         <el-button type="primary" @click.native.prevent="login('form')">Log In</el-button>
         <el-button class="shou" @click="register">Register</el-button>
       </div>
+
+      
     </div>
+    <!-- a dialog pops up when you click the 'register'-->
+    <fileDialog v-model="dialogShow" :rowInfo="rowInfo" :title="title"
+        :arrayNum="registerInfo.length" />
+      <!-- 我没想好 -->
+      <fileDetail v-if="detailShow" :rowInfo="rowInfo" />
   </div>
 </template>
 
@@ -48,11 +44,32 @@ import { login, register } from "@/http/api";
 import router from "@/router";
 import { ElMessage } from "element-plus";
 import { layer } from "vue3-layer";
+import fileDialog from "./tool/fileDialog.vue";
+import fileDetail from "./tool/fileDetail.vue";
 
 export default {
   name: "login",
+  components: {
+    fileDialog, fileDetail
+  },
   data() {
     return {
+      // dialog and detail for register
+      dialogShow: false,
+      detailShow: false,
+      rowInfo: {
+
+      },
+      title: "",
+      registerInfo: [
+        {
+          Account: "",
+          Password: "",
+          email: ""
+        },
+
+      ],
+      
       form: {
         password: "",
         username: "",
@@ -71,13 +88,13 @@ export default {
     };
   },
   mounted() {
-    if(localStorage.getItem("access_token")) {
-      ElMessage({type: 'info', message: 'Already logged in.'})
+    if (localStorage.getItem("access_token")) {
+      ElMessage({ type: 'info', message: 'Already logged in.' })
       router.push('/group')
     }
-    if(localStorage.getItem("news")){
-      this.form=JSON.parse(localStorage.getItem("news"))
-      this.checked=true
+    if (localStorage.getItem("news")) {
+      this.form = JSON.parse(localStorage.getItem("news"))
+      this.checked = true
     }
   },
   methods: {
@@ -86,34 +103,39 @@ export default {
       this.$refs[form].validate((valid) => {
         if (valid) {
           login(this.form)
-              .then((res) => {
-                localStorage.setItem("access_token", res.data.data);
-                router.push('/group');
-              })
+            .then((res) => {
+              localStorage.setItem("access_token", res.data.data);
+              router.push('/group');
+            })
         } else {
           return false;
         }
       });
     },
 
-    remenber(data){
-      this.checked=data
-      if(this.checked){
-        localStorage.setItem("news",JSON.stringify(this.form))
-      }else{
+    remenber(data) {
+      this.checked = data
+      if (this.checked) {
+        localStorage.setItem("news", JSON.stringify(this.form))
+      } else {
         localStorage.removeItem("news")
       }
     },
     forgetpas() {
       this.$message({
-        type:"info",
-        message:"功能尚未开发额",
-        showClose:true
+        type: "info",
+        message: "功能尚未开发额",
+        showClose: true
       })
     },
     register() {
+      this.title = "Register";
+      this.rowInfo = {
+        };
+      this.dialogShow = true;
+
       register(this.form).then((res) => {
-        ElMessage({type: 'success', message: 'Register successfully, please log in'})
+        ElMessage({ type: 'success', message: 'Register successfully, please log in' })
       })
     },
   },
@@ -170,6 +192,5 @@ export default {
   cursor: pointer;
   color: #606266;
 }
-
 </style>
 

@@ -1,21 +1,24 @@
+<!--
+ * @Author: Yutan Wu
+ * @Date: 2022-12-27 15:29
+ * @LastEditTime: 2022-12-27 15:29
+ * @LastEditors: Yutan Wu
+ * @Description: This is the register dialog that in the 'Register' button of the LogIn.vue
+ * @FilePath: \vue3-element-admin\src\tool\fileDetail.vue
+-->
 <template>
   <el-dialog :model-value="true" :title="title" @close="handleClose">
-    <el-form
-        ref="ruleFormRef"
-        :model="formData"
-        :rules="rules"
-        label-width="25%"
-        class="demo-ruleForm"
-        :size="formSize"
-    >
-      <el-form-item label="File Name: " prop="FileName">
-        <el-input v-model="formData.fileName"></el-input>
+    <el-form ref="ruleFormRef" :model="formData" :rules="rules" label-width="25%" class="demo-ruleForm"
+      :size="formSize">
+      <el-form-item label="User Account: " prop="Account">
+        <el-input v-model="formData.Account" placeholder="Please input account" clearable></el-input>
       </el-form-item>
-      <el-form-item label="File Tag: " prop="FileTag">
-        <el-input v-model="formData.fileTag"></el-input>
+      <el-form-item label="User Password: " prop="Password">
+        <el-input v-model="formData.Password" type="password" placeholder="Please input password"
+          show-password></el-input>
       </el-form-item>
-      <el-form-item label="File Discription: " prop="FileDiscription">
-        <el-input type="textarea" :autosize="{minRows:8}" v-model="formData.fileDiscription"></el-input>
+      <el-form-item label="User Email: " prop="email">
+        <el-input v-model="formData.email" placeholder="Please input email" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm()">Confirm</el-button>
@@ -23,12 +26,21 @@
       </el-form-item>
     </el-form>
   </el-dialog>
+  <!-- still has some bugs!! -->
+  <!-- not complete all information of register -->
+  <!-- <el-dialog
+        v-model="innerVisible"
+        width="30%"
+        title="Please complete all information."
+        append-to-body
+      /> -->
 </template>
 
 <script>
 import {
-  reactive, toRefs, onMounted} from "vue";
-import {} from "@/http/api";
+  reactive, toRefs, onMounted
+} from "vue";
+import { } from "@/http/api";
 export default {
 
   props: {
@@ -43,6 +55,7 @@ export default {
       type: Boolean,
       default: false,
     },
+
     rowInfo: {
 
       type: Object,
@@ -61,21 +74,19 @@ export default {
   },
   setup(props, {
     emit }) {
-
     const data = reactive({
-
+      innerVisible: false,//show the inner dialog if not completed the register
       dialogFlag: false,
       formData: {
-        fileName : "",
-        fileTag : "" ,
-        fileDiscription : ""
+        Account: "",
+        Password: "",
+        email: ""
       },
     });
     const method = reactive({
 
       // close the dialog
       handleClose() {
-
         emit("update:dialogShow", false);
       },
       // reset the dialog
@@ -88,17 +99,24 @@ export default {
       submitForm() {
 
         method.handleClose();
-        if (props.rowInfo.id || props.rowInfo.fileName || props.rowInfo.fileDiscription) {
+
+
+        //bug codes below
+        //if not null
+        if (props.rowInfo.Account && props.rowInfo.Password && props.rowInfo.email) {
 
           // modify the dialog
           emit("editRow", data.formData);
 
         } else {
+
+          data.innerVisible = true;
           // add a new dialog to the data
           // data.formData["id"] = props.arrayNum + 1;
           // emit("addRow", data.formData);
-          createFile()
+          //createFile()
         }
+        //bug codes above
 
 
       },
@@ -109,10 +127,12 @@ export default {
       data.dialogFlag = props.rowInfo;
     });
     return {
-      ...toRefs(data), ...method };
+      ...toRefs(data), ...method
+    };
   },
 };
 </script>
 
 <style>
+
 </style>
