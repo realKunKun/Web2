@@ -26,14 +26,6 @@
       </el-form-item>
     </el-form>
   </el-dialog>
-  <!-- still has some bugs!! -->
-  <!-- not complete all information of register -->
-  <!-- <el-dialog
-        v-model="innerVisible"
-        width="30%"
-        title="Please complete all information."
-        append-to-body
-      /> -->
 </template>
 
 <script>
@@ -75,7 +67,6 @@ export default {
   setup(props, {
     emit }) {
     const data = reactive({
-      innerVisible: false,//show the inner dialog if not completed the register
       dialogFlag: false,
       formData: {
         Account: "",
@@ -109,14 +100,11 @@ export default {
           emit("editRow", data.formData);
 
         } else {
-
-          data.innerVisible = true;
           // add a new dialog to the data
           // data.formData["id"] = props.arrayNum + 1;
           // emit("addRow", data.formData);
           //createFile()
         }
-        //bug codes above
 
 
       },
