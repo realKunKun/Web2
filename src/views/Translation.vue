@@ -388,7 +388,7 @@ export default {
     },
     mySave() {
       this.itemkey = Math.random();
-      this.tableData[this.tableData.indexOf(this.row)].translation = this.edit_translation;
+      this.row.translation = this.edit_translation;
       updateTranslation(this.row.translation, this.row.id).then((res) => {
 
       })},

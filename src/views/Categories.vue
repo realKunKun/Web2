@@ -153,7 +153,7 @@ export default {
               data.categoryInfo.push({ id: 0, CategoryName: "", CategoryDiscription: "",  projId:0})
             }
             data.categoryInfo[x].CategoryName = res.data.data[x].name
-            data.categoryInfo[x].CategoryDiscription = "the original language is" + res.data.data[x].oriLang
+            data.categoryInfo[x].CategoryDiscription = res.data.data[x].comment
             data.categoryInfo[x].id = res.data.data[x].id
             data.categoryInfo[x].projId=router.currentRoute.value.params.id
           }
